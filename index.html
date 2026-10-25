@@ -133,7 +133,7 @@ select,input,button.btn{background:#0d1322;color:var(--ink);font-size:16px}
 table{font-size:15.5px}
 th{font-size:13.5px}
 td small{font-size:12.5px}
-table.tot{font-size:15px;min-width:500px}
+
 tr.gh td{font-size:17px}
 .team b{font-size:40px}
 .team>div{font-size:17px}
@@ -150,6 +150,45 @@ header h1{white-space:nowrap;font-size:clamp(19px,6.2vw,36px)}
 .mycard{border:2px solid var(--pri2);background:linear-gradient(135deg,rgba(229,36,92,.16),rgba(229,36,92,.04));box-shadow:0 6px 18px rgba(229,36,92,.2)}
 .mylabel{font-size:20px}
 .mysel{flex:1;min-width:150px;font-size:19px;font-weight:700;padding:12px 14px;border:2px solid var(--pri2);border-radius:12px;background:#0d1322;color:var(--ink)}
+.scroll{margin:0 -8px;overflow:visible}
+table.tot{table-layout:fixed;min-width:0;width:100%;font-size:clamp(11px,3.4vw,16px)}
+table.tot th,table.tot td{padding:7px 1px;white-space:nowrap;overflow:hidden}
+table.tot th{font-size:clamp(9.5px,2.9vw,13.5px)}
+table.tot td small{font-size:clamp(8.5px,2.5vw,12px);white-space:nowrap}
+table.tot td.l{text-align:left;padding-left:4px}
+table.tot td.l b{margin-right:3px}
+table.tot .tm{font-size:clamp(9px,2.6vw,12px);padding:0 5px}
+table.tot .tt{font-size:clamp(13px,4.2vw,19px)}
+table.tot .rk{min-width:0;width:1.9em;height:1.9em;line-height:1.9em}
+table.tot .medal{font-size:clamp(15px,4.8vw,22px)}
+table.tot tr.top td{background:rgba(245,179,1,.14)}
+tr.gh td{white-space:nowrap}
+.card h3 small{font-size:clamp(11px,3.2vw,15px)}
+.final{border:2px solid var(--gold);background:linear-gradient(135deg,rgba(245,179,1,.16),rgba(245,179,1,.03))}
+.final .frow{display:flex;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:17px}
+.final .frow:first-of-type{border-top:0}
+.final .fg{color:#fff;font-weight:800;border-radius:8px;padding:2px 10px;white-space:nowrap}
+.final .g3 .fg{background:#ea580c}.final .g2 .fg{background:#16a34a}.final .g1 .fg{background:#2f6fe0}
+table.tot .rk{width:1.45em;height:1.45em;line-height:1.45em;font-size:clamp(10px,3vw,13px);font-weight:600;opacity:.85}
+table.tot .rk.r1,table.tot .rk.r2{width:2em;height:2em;line-height:2em;font-size:clamp(15px,4.8vw,21px);font-weight:900;opacity:1}
+table.tot .rk.r3{width:1.45em;height:1.45em;line-height:1.45em;background:#232c43;color:var(--ink)}
+table.tot .medal{font-size:clamp(20px,6.2vw,28px);line-height:1}
+table.tot td:first-child{overflow:visible}
+.tl{flex-wrap:wrap;gap:4px 10px;padding:10px 0}
+.tl .t{width:auto;min-width:62px;white-space:nowrap;font-size:clamp(13px,3.9vw,16px)}
+.tl .b{flex:1;min-width:0}
+.tl .b b{font-size:clamp(14px,4.3vw,17px)}
+.tl .b small{font-size:clamp(12px,3.5vw,14px)}
+.tag{font-size:clamp(11px,3.1vw,12.5px);padding:1px 7px}
+.snackbox{flex:0 0 100%;margin-top:4px}
+.sn{font-size:clamp(12.5px,3.7vw,15px);white-space:nowrap}
+.sn .tm2{margin-right:4px}
+.notebar{font-size:clamp(12px,3.5vw,15px)}
+.fold{font-size:clamp(15px,4.6vw,19px);white-space:nowrap;gap:8px}
+.fold .muted{font-size:clamp(12px,3.5vw,14px)}
+.tl.now{margin:0 -10px;padding:10px}
+.tl .b .tag.e{display:table;margin:0 0 3px}
+.tl .b b{overflow:hidden;text-overflow:clip;vertical-align:bottom}
 </style>
 </head>
 <body>
@@ -218,16 +257,16 @@ const SCHEDULE = [
   {s:"08:30",e:"09:00",k:"r",t:"학급별 아침조회"},
   {s:"09:00",e:"09:20",k:"r",t:"집합(준비운동) 및 개회사"},
   {s:"09:20",e:"09:30",k:"r",t:"댄스부 공연"},
-  {s:"09:30",e:"10:15",k:"c",ev:"wave",t:"1-1 파도타기",sub:"3학년 → 2학년 → 1학년 순 (학년별 전체 학급)"},
-  {s:"10:15",e:"11:00",k:"c",ev:"typhoon",t:"1-2 태풍의 눈",sub:"3학년 → 2학년 → 1학년 순"},
-  {s:"11:00",e:"11:30",k:"c",ev:"n99",t:"1-3 도전 99초",sub:"3학년 → 2학년 → 1학년 순 (남→여)"},
+  {s:"09:30",e:"10:15",k:"c",ev:"wave",t:"1-1 파도타기",sub:"3 → 2 → 1학년 순"},
+  {s:"10:15",e:"11:00",k:"c",ev:"typhoon",t:"1-2 태풍의 눈",sub:"3 → 2 → 1학년 순"},
+  {s:"11:00",e:"11:30",k:"c",ev:"n99",t:"1-3 도전 99초",sub:"3 → 2 → 1학년 순 (남→여)"},
   {s:"11:30",e:"11:45",k:"e",t:"서바이벌 OX 퀴즈 및 행운권 추첨①",sub:"이벤트 · 전체"},
-  {s:"11:45",e:"12:00",k:"c",ev:"relay",t:"1-4 학급 계주",sub:"3학년 → 2학년 → 1학년 순 (학급 대표)"},
+  {s:"11:45",e:"12:00",k:"c",ev:"relay",t:"1-4 학급 계주",sub:"3 → 2 → 1학년 순 (대표)"},
   {s:"12:00",e:"12:50",k:"r",t:"점심식사"},
   {s:"12:50",e:"13:00",k:"r",t:"밴드부 공연"},
-  {s:"13:00",e:"13:30",k:"t",ev:"tire",t:"2-1 타이어 레이스",sub:"청백대항 · 팀당 50명"},
-  {s:"13:30",e:"14:00",k:"t",ev:"tug",t:"2-2 단체 줄다리기",sub:"청백대항 · 팀당 70명 (남→여)"},
-  {s:"14:00",e:"14:15",k:"t",ev:"crelay",t:"2-3 청백 계주",sub:"청백대항 · 팀당 18명"},
+  {s:"13:00",e:"13:30",k:"t",ev:"tire",t:"2-1 타이어 레이스",sub:"팀당 50명"},
+  {s:"13:30",e:"14:00",k:"t",ev:"tug",t:"2-2 단체 줄다리기",sub:"팀당 70명 (남→여)"},
+  {s:"14:00",e:"14:15",k:"t",ev:"crelay",t:"2-3 청백 계주",sub:"팀당 18명"},
   {s:"14:15",e:"14:30",k:"e",t:"행운권 추첨② 및 순위 발표 / 폐회사",sub:"전 학년 · 운동장"}
 ];
 // 간식 부스 (본관 우측 현관·가사실쪽 출입구, 09:30 ~ 11:20, 학급별 지정 시간에만 이용)
@@ -264,7 +303,7 @@ function init(){
   if (FIREBASE_CONFIG){
     firebase.initializeApp(FIREBASE_CONFIG);
     fb = firebase; ref = firebase.firestore().doc("sports/state");
-    ref.onSnapshot(s=>{ state = s.data()||{}; ready=true; setStatus("● 실시간 연결됨"); onState(); },
+    ref.onSnapshot(s=>{ state = s.data()||{}; ready=true; setStatus("실시간 연결됨"); onState(); },
                    e=>{ console.error(e); setStatus("⚠ 연결 오류"); });
     firebase.auth().onAuthStateChanged(u=>{ user=u; isAdmin = !!u && ADMIN_EMAILS.includes((u.email||"").toLowerCase()); renderTab(); });
   } else {
@@ -331,21 +370,32 @@ function setTab(t){ tab=t; location.hash=t; document.querySelectorAll("nav butto
 function onState(){
   if (tab==="admin" && isAdmin) syncAdmin(); else renderTab();
 }
+function fitText(){
+  document.querySelectorAll(".tl .b b, .notebar").forEach(el=>{
+    let s = parseFloat(getComputedStyle(el).fontSize);
+    el.style.whiteSpace = "nowrap";
+    el.style.display = el.tagName==="B" ? "inline-block" : "block";
+    el.style.maxWidth = "100%";
+    while (el.scrollWidth > el.clientWidth+1 && s>12.5){ s -= .5; el.style.fontSize = s+"px"; }
+    if (el.scrollWidth > el.clientWidth+1) el.style.whiteSpace = "normal";
+  });
+}
+window.addEventListener("resize", ()=>{ if (tab==="schedule") renderTab(); });
 function renderTab(){
   const v = $("#view");
-  if (tab==="schedule") v.innerHTML = viewSchedule();
+  if (tab==="schedule"){ v.innerHTML = viewSchedule(); fitText(); }
   else if (tab==="events") v.innerHTML = viewEvents();
   else if (tab==="score") v.innerHTML = viewScore();
   else renderAdmin();
 }
 
 function myTeam(){ const c=mine(); return c ? state.teams?.[c] : null; }
-const fold = {};
-function toggleFold(id){ fold[id] = !fold[id]; renderTab(); }
-function partOf(s){ const m=mins(s.s); return m<720?"p1":m<855?"p2":"end"; }
+const manual = {}, ENDS = {p1:720, p2:870};
+const isFolded = (id, now) => manual[id]!==undefined ? manual[id] : (now!=null && now>=ENDS[id]);
+function toggleFold(id){ manual[id] = !isFolded(id, nowMin()); renderTab(); }
+function partOf(s){ return mins(s.s)<720 ? "p1" : "p2"; }
 function viewSchedule(){
   const now = nowMin(), my = mine();
-  if (fold.p1===undefined) fold.p1 = now!=null && now>=720;
   const opts = `<option value="">내 반 선택 안 함</option>` + ALL_CLASSES.map(c=>`<option value="${c}" ${c===my?"selected":""}>${c.replace("-","학년 ")}반</option>`).join("");
   const tm = myTeam();
   const tags = {c:"학급대항",t:"청백전",e:"이벤트",r:""};
@@ -356,21 +406,21 @@ function viewSchedule(){
     return `<div class="snackbox"><div class="sh">🍢 간식 부스 이용 시간</div>` + list.map(([g,cs,a,b])=>{
       const me = my && my.startsWith(g+"-") && cs.includes(+my.split("-")[1]);
       const st = now==null ? "" : now>=mins(b) ? "done" : now>=mins(a) ? "now" : "";
-      return `<div class="sn ${me?"me":""} ${st}"><span class="tm2">${a}~${b}</span> <b>${g}학년 ${cs.join(", ")}반</b>${st==="now"?" 🍢":""}</div>`;
+      return `<div class="sn ${me?"me":""} ${st}"><span class="tm2">${a}~${b}</span> <b>${g}학년 ${cs.join(",")}반</b>${st==="now"?" 🍢":""}</div>`;
     }).join("") + `</div>`;
   };
   const rowHtml = s=>{
     const cls = now==null ? "" : now>=mins(s.e) ? "done" : now>=mins(s.s) ? "now" : "";
     const tag = s.k!=="r" ? `<span class="tag ${s.k}">${tags[s.k]}</span>` : "";
-    return `<div class="tl ${cls}"><div class="t">${s.s}<br><span class="muted">~ ${s.e}</span></div><div class="b">${tag}<b>${s.t}</b>${cls==="now"?" 🔴 진행 중":""}${s.sub?`<small>${s.sub}</small>`:""}${snackHtml(s)}</div></div>`;
+    return `<div class="tl ${cls}"><div class="t">${s.s}<br><span class="muted">~ ${s.e}</span></div><div class="b">${tag}<b>${s.t}</b>${cls==="now"?" 🔴 진행 중":""}${s.sub?`<small>${s.sub}</small>`:""}</div>${snackHtml(s)}</div>`;
   };
   let h = `<div class="card mycard"><div class="row"><b class="mylabel">👤 내 반 선택</b><select class="mysel" onchange="setMine(this.value)">${opts}</select>${my&&tm?`<span class="tm ${tm==="청"?"b":"w"}">${tm}팀</span>`:""}</div></div>`;
-  const parts = [["p1","1부 학급대항전","08:30 ~ 12:00"],["p2","2부 청백대항전","12:00 ~ 14:15"],["end",null]];
+  const parts = [["p1","1부 학급대항전","08:30 ~ 12:00"],["p2","2부 청백대항전","12:00 ~ 14:30"]];
   parts.forEach(([id,title,range])=>{
     const rows = SCHEDULE.filter(s=>partOf(s)===id).map(rowHtml).join("");
     if (!title){ h += `<div class="card">${rows}</div>`; return; }
-    const open = !fold[id];
-    h += `<div class="card"><button class="fold" onclick="toggleFold('${id}')"><span>${open?"▼":"▶"} ${title}</span><span class="muted">${range} · ${open?"접기":"펼치기"}</span></button>${open?(id==="p1"?`<div class="notebar">🍢 간식 부스: 본관 우측 현관(가사실쪽 출입구) · 떡꼬치, 음료 등 · 09:45~11:30, 학급별 지정된 시간에만 이용</div>`:"")+rows:""}</div>`;
+    const open = !isFolded(id, now);
+    h += `<div class="card"><button class="fold" onclick="toggleFold('${id}')"><span>${open?"▼":"▶"} ${title}</span><span class="muted">${range.replace(/ /g,"")}</span></button>${open?(id==="p1"?`<div class="notebar">🍢 본관 우측 현관 · 지정 시간에만 이용</div>`:"")+rows:""}</div>`;
   });
   return h;
 }
@@ -394,27 +444,39 @@ function viewEvents(){
   return h;
 }
 
+function fmtShort(sec){ if (sec>=60){ const m=Math.floor(sec/60), s=(sec%60).toFixed(1).replace(/\.0$/,""); return `${m}:${s.padStart(s.includes(".")?4:2,"0")}`; } return String(+sec.toFixed(2)); }
+function teamDone(){ return TEAM_EVENTS.every(ev=>{ const r=state.team?.[ev.id]||[]; return r.length>0 && r.every(w=>w==="청"||w==="백"); }); }
+function gradeDone(g, rows){ return teamDone() && rows.every(r=>r.team && r.ev.every(Boolean)); }
 function viewScore(){
   const {sc} = teamScore();
   const lead = sc.청===sc.백 ? "" : sc.청>sc.백 ? "청" : "백";
-  const teamCard = `<div class="card"><h3>청백대항전</h3><div class="team">
-    <div class="blue ${lead==="청"?"win":""}">청팀<b>${sc.청}</b>점</div><div class="white ${lead==="백"?"win":""}">백팀<b>${sc.백}</b>점</div></div>
-    <div class="muted wins" style="margin-top:8px">${TEAM_EVENTS.map(ev=>{ const r=state.team?.[ev.id]||[]; return `${ev.name} ${r.length?r.map(w=>w==="청"?"🔵청 승":w==="백"?"⚪백 승":"·").join(" / "):"대기"}`; }).join("<br>")}</div></div>`;
+  const tables = {}, done = {};
+  [3,2,1].forEach(g=>{ tables[g]=gradeTable(g); done[g]=gradeDone(g,tables[g]); });
   let h = "";
-  h += `<div class="card"><h3>🏆 종합 순위 <small class="muted">학급대항 + 청백대항 합계 (학년별 순위)</small></h3><div class="scroll"><table class="tot">
-    <tr><th>순위</th><th class="l">학급</th>${CLASS_EVENTS.map(e=>`<th>${e.name.replace("도전 ","")}</th>`).join("")}<th>학급<br>소계</th><th>청백</th><th>합계</th></tr>`;
+  const finals = [3,2,1].filter(g=>done[g]);
+  if (finals.length) h += `<div class="card final"><h3>🏅 최종 결과</h3>` + finals.map(g=>{
+    const w = tables[g].filter(r=>r.rank===1), s = tables[g].filter(r=>r.rank===2);
+    const nm = a => a.map(r=>`<b>${r.c.replace("-","학년 ")}반</b>`).join(", ");
+    return `<div class="frow g${g}"><span class="fg">${g}학년</span><span>🥇 ${nm(w)}${s.length?`<br>🥈 ${nm(s)}`:""}</span></div>`;
+  }).join("") + `</div>`;
+  h += `<div class="card"><h3>🏆 종합 순위 <small class="muted">학급대항 + 청백대항</small></h3><div class="scroll"><table class="tot">
+    <colgroup><col style="width:12%"><col style="width:14%"><col style="width:10.5%"><col style="width:10.5%"><col style="width:10.5%"><col style="width:10.5%"><col style="width:10%"><col style="width:9%"><col style="width:13%"></colgroup>
+    <tr><th>순위</th><th>학급</th>${["파도","태풍","99초","계주"].map(n=>`<th>${n}</th>`).join("")}<th>소계</th><th>청백</th><th>합계</th></tr>`;
   [3,2,1].forEach(g=>{
-    h += `<tr class="gh g${g}"><td colspan="9" class="l">${g}학년 <span class="gsub">${GRADE_CLASSES[g]}개 학급</span></td></tr>`;
-    gradeTable(g).forEach(r=>{
+    h += `<tr class="gh g${g}"><td colspan="9" class="l">${g}학년 <span class="gsub">${GRADE_CLASSES[g]}개 학급${done[g]?" · 순위 확정":" · 진행 중"}</span></td></tr>`;
+    tables[g].forEach(r=>{
       const started = r.total>0 || r.ev.some(Boolean);
+      const medal = done[g] && r.rank<=2 ? (r.rank===1?"🥇":"🥈") : null;
       const tm = r.team ? `<span class="tm ${r.team==="청"?"b":"w"}">${r.team}</span>` : "";
-      h += `<tr class="gr g${g}"><td>${started?`<span class="rk ${r.rank<=3?"r"+r.rank:""}">${r.rank}</span>`:"-"}</td><td class="l"><b>${r.c.replace("-","학년 ")}반</b> ${tm}</td>`;
-      r.ev.forEach((x,i)=>{ h += x ? `<td><b>${x.pts}</b><small>${CLASS_EVENTS[i].type==="count"?x.v+"개":fmtTime(x.v)}</small></td>` : `<td class="muted">-</td>`; });
-      h += `<td>${r.cls}</td><td>${r.team?r.tp:"-"}</td><td><b style="font-size:16px">${r.total}</b></td></tr>`;
+      h += `<tr class="gr g${g} ${medal?"top":""}"><td>${medal?`<span class="medal">${medal}</span>`:started?`<span class="rk ${r.rank<=3?"r"+r.rank:""}">${r.rank}</span>`:"-"}</td><td class="l"><b>${r.c.split("-")[1]}반</b>${tm}</td>`;
+      r.ev.forEach((x,i)=>{ h += x ? `<td><b>${x.pts}</b><small>${CLASS_EVENTS[i].type==="count"?x.v:fmtShort(x.v)}</small></td>` : `<td class="muted">-</td>`; });
+      h += `<td>${r.cls}</td><td>${r.team?r.tp:"-"}</td><td><b class="tt">${r.total}</b></td></tr>`;
     });
   });
-  h += `</table></div><p class="muted" style="margin:8px 0 0">※ 합계 = 학급대항 4종목 점수 + 소속 팀(청/백)의 청백대항 점수. 팀 배정 전에는 청백 점수가 ‘-’로 표시됩니다. 동점 시 ‘도전 99초’ 점수 순.</p></div>`;
-  h += teamCard;
+  h += `</table></div><p class="muted" style="margin:8px 0 0">※ 작은 숫자는 기록(초 또는 개수). 합계 = 학급대항 점수 + 소속 팀의 청백대항 점수. 모든 경기 결과와 팀 배정이 끝난 학년은 1·2위가 🥇🥈로 표시됩니다.</p></div>`;
+  h += `<div class="card"><h3>청백대항전</h3><div class="team">
+    <div class="blue ${lead==="청"?"win":""}">청팀<b>${sc.청}</b>점</div><div class="white ${lead==="백"?"win":""}">백팀<b>${sc.백}</b>점</div></div>
+    <div class="muted wins" style="margin-top:8px">${TEAM_EVENTS.map(ev=>{ const r=state.team?.[ev.id]||[]; return `${ev.name} ${r.length?r.map(w=>w==="청"?"🔵청 승":w==="백"?"⚪백 승":"·").join(" / "):"대기"}`; }).join("<br>")}</div></div>`;
   const sp = state.spirit || [];
   if (sp.length) h += `<div class="card"><h3>📣 응원 및 질서 우수 학급</h3>${sp.map(c=>`<span class="tm b">${c.replace("-","학년 ")}반</span>`).join(" ")}</div>`;
   return h;
