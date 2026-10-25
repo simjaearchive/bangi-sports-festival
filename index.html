@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b14">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<title>2026 방이중학교 체육 한마당</title>
+<style>
+:root{--bg:#f3f5fa;--card:#fff;--ink:#1c2333;--sub:#5d6678;--line:#e1e5ee;--pri:#1e3a8a;--pri2:#3b5bdb;--blue:#2563eb;--white:#64748b;--ok:#16a34a;--warn:#b45309;--bad:#dc2626;--gold:#f5b301;--silver:#9aa4b2;--bronze:#c27c3a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1420;--card:#19202f;--ink:#e8ecf5;--sub:#9aa5ba;--line:#2a3347;--pri:#93a8ff;--pri2:#7c93ff;--white:#a3aec2}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+header{background:linear-gradient(135deg,#1e3a8a,#3b5bdb);color:#fff;padding:18px 16px 14px;padding-top:calc(18px + env(safe-area-inset-top))}
+header h1{margin:0;font-size:20px}
+header p{margin:2px 0 0;font-size:13px;opacity:.85}
+.status{display:inline-block;margin-top:8px;font-size:12px;padding:2px 10px;border-radius:99px;background:rgba(255,255,255,.18)}
+main{max-width:860px;margin:0 auto;padding:14px 16px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav{gap:6px;padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+nav button{flex:1;border:0;background:none;color:var(--sub);padding:7px 0 6px;font:inherit;font-size:14px;font-weight:700;border-radius:12px;cursor:pointer}
+nav button span{display:block;font-size:24px;line-height:1.2}
+nav button.on{color:#fff;background:var(--pri2)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 8px;font-size:16px}
+.banner{background:#fff7e0;color:#7a5200;border:1px solid #f1d58a;border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px}
+@media(prefers-color-scheme:dark){.banner{background:#3a2f12;color:#f5d98a;border-color:#6b5520}}
+.muted{color:var(--sub);font-size:13px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,input,button.btn{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+input[type=text]{width:100%}
+button.btn{cursor:pointer}
+button.pri{background:var(--pri2);color:#fff;border-color:var(--pri2)}
+button.danger{color:var(--bad);border-color:var(--bad)}
+.chips{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 14px;border-radius:99px;cursor:pointer;font:inherit;font-size:14px}
+.chip.on{background:var(--pri2);color:#fff;border-color:var(--pri2)}
+/* schedule */
+.tl{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tl:last-child{border:0}
+.tl .t{width:92px;flex:none;font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+.tl .b{flex:1}
+.tl .b small{display:block;color:var(--sub)}
+.tl.now{background:rgba(59,91,219,.12);margin:0 -14px;padding:10px 14px;border-radius:10px}
+.tl.done{opacity:.5}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:99px;margin-right:4px;color:#fff;vertical-align:middle}
+.tag.c{background:var(--pri2)}.tag.t{background:#7c3aed}.tag.e{background:#db2777}.tag.r{background:#64748b}
+.snack{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:8px}
+.snackbox{margin-top:8px;border:1px solid #f1d58a;background:rgba(245,179,1,.10);border-radius:10px;padding:6px 10px}
+.snackbox .sh{font-size:12px;font-weight:700;margin-bottom:2px}
+.sn{font-size:13px;padding:2px 6px;border-radius:6px}
+.sn .tm2{font-variant-numeric:tabular-nums;color:var(--sub)}
+.sn.done{opacity:.45}.sn.now{background:rgba(245,179,1,.35)}.sn.me{background:var(--gold);color:#222}.sn.me .tm2{color:#222}
+.notebar{font-size:13px;background:rgba(245,179,1,.12);border-radius:10px;padding:6px 10px;margin-bottom:4px}
+.snack div{border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px;display:flex;flex-direction:column;position:relative}
+.snack .no{position:absolute;right:8px;top:4px;font-size:11px;color:var(--sub)}
+.fold{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-weight:800;font-size:16px;padding:2px 0 8px;cursor:pointer}
+.scroll{overflow-x:auto;margin:0 -6px}
+table.tot{font-size:13px;min-width:430px}
+table.tot th,table.tot td{padding:7px 2px}
+tr.gh td{font-weight:800;font-size:15px;color:#fff;padding:7px 8px}
+tr.gh.g3 td{background:#ea580c}tr.gh.g2 td{background:#16a34a}tr.gh.g1 td{background:#2f6fe0}
+tr.gh .gsub{font-weight:400;font-size:12px;opacity:.85;margin-left:6px}
+tr.gr.g3 td:first-child{box-shadow:inset 4px 0 #ea580c}tr.gr.g2 td:first-child{box-shadow:inset 4px 0 #16a34a}tr.gr.g1 td:first-child{box-shadow:inset 4px 0 #2f6fe0}
+tr.gr.g3{background:rgba(234,88,12,.06)}tr.gr.g2{background:rgba(22,163,74,.06)}tr.gr.g1{background:rgba(47,111,224,.06)}
+.tm{display:inline-block;font-size:12px;font-weight:700;padding:1px 9px;border-radius:99px;color:#fff;background:var(--pri2)}
+.tm.b{background:#2563eb}.tm.w{background:#64748b}
+.tchip{min-width:64px}
+.snack div.me{background:var(--gold);color:#222;border-color:var(--gold);font-weight:700}
+/* score */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 4px;text-align:center;border-bottom:1px solid var(--line)}
+th{color:var(--sub);font-weight:600;font-size:12px}
+td.l,th.l{text-align:left}
+td small{display:block;color:var(--sub);font-size:11px}
+.rk{display:inline-block;min-width:26px;height:26px;line-height:26px;border-radius:50%;font-weight:700;background:var(--line)}
+.rk.r1{background:var(--gold);color:#222}.rk.r2{background:var(--silver);color:#222}.rk.r3{background:var(--bronze);color:#fff}
+.team{display:flex;gap:10px}
+.team>div{flex:1;border-radius:14px;padding:14px;color:#fff;text-align:center}
+.team .blue{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.team .white{background:linear-gradient(135deg,#64748b,#94a3b8)}
+.team b{font-size:34px;display:block;line-height:1.1}
+.team .win{box-shadow:0 0 0 3px var(--gold)}
+/* events */
+.ev h3 small{font-weight:400;color:var(--sub);margin-left:6px}
+.pt{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.pt span{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:2px 8px;font-size:12px}
+ul.n{margin:6px 0 0;padding-left:18px}
+ul.n li{margin:2px 0;color:var(--sub);font-size:13px}
+/* admin */
+.in{width:84px;text-align:right}
+.arow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.arow .nm{width:54px;font-weight:700}
+.arow .pv{margin-left:auto;font-size:13px;color:var(--sub);min-width:84px;text-align:right}
+.rnd{display:flex;gap:6px;align-items:center;margin:6px 0}
+.rnd .chip{padding:5px 12px}
+.chip.on.b{background:#2563eb;border-color:#2563eb}.chip.on.w{background:#64748b;border-color:#64748b}
+.arow .chip{padding:4px 11px}
+.toast{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#111;color:#fff;padding:8px 16px;border-radius:99px;font-size:13px;opacity:0;transition:.25s;pointer-events:none;z-index:20}
+.toast.on{opacity:.92}
+/* ===== 다크 테마 & 글자 크기 ===== */
+:root{--bg:#080b14;--card:#131a2b;--ink:#f4f6fb;--sub:#8e99b0;--line:#232c43;--pri:#ff4d7d;--pri2:#e5245c;--white:#8e99b0}
+html{-webkit-text-size-adjust:100%}
+body{font-size:17px;background:var(--bg);color:var(--ink);padding-bottom:calc(28px + env(safe-area-inset-bottom));font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif}
+header{background:var(--bg);border-bottom:1px solid var(--line);padding:26px 18px 16px;padding-top:calc(26px + env(safe-area-inset-top))}
+header h1{font-family:"Black Han Sans","Jua","Malgun Gothic",sans-serif;font-weight:900;font-size:34px;line-height:1.2;letter-spacing:-.5px}
+header h1 em{font-style:normal;color:var(--pri2)}
+header p{font-size:15px;opacity:.7;margin-top:6px}
+.status{background:none;padding:0;margin-top:10px;font-size:14px;color:var(--sub)}
+.status::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:#22c55e;margin-right:7px}
+main{padding:16px 16px 24px}
+nav{position:sticky;top:0;bottom:auto;left:auto;right:auto;z-index:30;background:var(--bg);border:0;padding:12px 16px 10px;gap:8px;max-width:860px;margin:0 auto}
+nav button{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 4px;font-size:16px;font-weight:700;color:var(--sub);background:var(--card);border:1px solid var(--line);border-radius:12px}
+nav button span{display:inline;font-size:18px}
+nav button.on{color:#fff;background:var(--pri2);border-color:var(--pri2);box-shadow:0 6px 18px rgba(229,36,92,.35)}
+.card{background:var(--card);border-radius:16px;padding:16px}
+.card h3{font-size:20px}
+.muted{font-size:15px}
+select,input,button.btn{background:#0d1322;color:var(--ink);font-size:16px}
+.banner{background:#2a2110;color:#f5d98a;border-color:#6b5520;font-size:15px}
+.chip{font-size:16px;background:#0d1322}
+.chip.on{background:var(--pri2);border-color:var(--pri2)}
+.tl .t{font-size:16px;width:96px}
+.tl .b b{font-size:17px}
+.tl.now{background:rgba(229,36,92,.14)}
+.tag{font-size:12.5px}
+.tag.c{background:var(--pri2)}
+.snackbox{background:rgba(245,179,1,.08);border-color:#5b4a1a}
+.snackbox .sh{font-size:14px}
+.sn{font-size:15px}
+.notebar{font-size:15px;background:rgba(245,179,1,.1)}
+.fold{font-size:19px;color:var(--ink)}
+table{font-size:15.5px}
+th{font-size:13.5px}
+td small{font-size:12.5px}
+table.tot{font-size:15px;min-width:500px}
+tr.gh td{font-size:17px}
+.team b{font-size:40px}
+.team>div{font-size:17px}
+.ev h3 small{font-size:14px}
+.pt span{font-size:14px;background:#0d1322}
+ul.n li{font-size:15px}
+.arow .pv{font-size:15px}
+.in{width:92px}
+.rk{background:#232c43;color:var(--ink)}
+.toast{bottom:calc(24px + env(safe-area-inset-bottom))}
+nav button{white-space:nowrap}
+@media(max-width:520px){nav{gap:5px;padding:10px 10px 8px}nav button{flex-direction:column;gap:2px;padding:9px 0;font-size:15px}nav button span{font-size:22px}}
+header h1{white-space:nowrap;font-size:clamp(19px,6.2vw,36px)}
+</style>
+</head>
+<body>
+<header>
+  <h1>2026 <em>방이중학교</em> 체육 한마당</h1>
+  <p>2026. 10. 30.(금) 08:30 ~ 14:30 · 운동장 · 방이중학교 체육교육부</p>
+  <span class="status" id="status">연결 확인 중…</span>
+</header>
+<nav id="nav">
+  <button data-tab="schedule"><span>📅</span>일정</button>
+  <button data-tab="score"><span>🏆</span>점수</button>
+  <button data-tab="events"><span>📖</span>종목 설명</button>
+  <button data-tab="admin"><span>🔒</span>관리자</button>
+</nav>
+<main id="view"></main>
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ============ 설정 (SETUP.md 참고) ============ */
+// Firebase 콘솔의 웹 앱 설정 값을 붙여넣으세요. null 이면 이 기기에서만 저장되는 '로컬 데모 모드'로 동작합니다.
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAFuHko__P2uXl_5MkI-NsyiiTagE4oLB8",
+  authDomain: "bangi-sports-festival.firebaseapp.com",
+  projectId: "bangi-sports-festival",
+  storageBucket: "bangi-sports-festival.firebasestorage.app",
+  messagingSenderId: "408382604595",
+  appId: "1:408382604595:web:3f9c5404a35a975d5c2a46"
+};
+/* 예:
+const FIREBASE_CONFIG = {
+  apiKey:"...", authDomain:"xxx.firebaseapp.com", projectId:"xxx",
+  storageBucket:"xxx.appspot.com", messagingSenderId:"...", appId:"..."
+};*/
+// 관리자로 허용할 구글 계정 (firestore.rules 의 목록과 동일하게 맞추세요)
+const ADMIN_EMAILS = ["bangi2026@gmail.com", "tlawogur9147@gmail.com"]; // 관리자 아이디 (firestore.rules 와 동일하게)
+const EVENT_DATE = "2026-10-30";
+
+/* ============ 계획서 데이터 ============ */
+const GRADE_CLASSES = {1:5, 2:6, 3:5};
+const CLASS_EVENTS = [
+  {id:"wave", no:"1-1", name:"파도타기", icon:"🌊", type:"time", pts:[60,50,40,30,20,10], time:"09:30 – 10:15",
+   how:"줄을 2명씩 들고 발밑과 머리 위를 통과하여 반환점을 돌아오는 단체 릴레이 경기",
+   notes:["학급별 전원 참가 (2인 1조)","1학년 5번 줄까지 / 2학년 6번 줄까지 / 3학년 7번 줄까지","줄잡이 인원: 1~5(6,7)번, 남은 인원: 6(7,8)번~"]},
+  {id:"typhoon", no:"1-2", name:"태풍의 눈", icon:"🌀", type:"time", pts:[90,75,60,45,30,15], time:"10:15 – 11:00",
+   how:"에어봉을 4명씩 들고 다같이 뛰어서 3개의 반환점을 돌아오는 단체 릴레이 경기",
+   notes:["학급별 전원 참가 (4인 1조)","1학년 6번 줄까지 / 2학년 7번 줄까지 / 3학년 8번 줄까지","2회 참가 학생: 처음과 마지막에 배정, 해당 학생 별(★) 표시"]},
+  {id:"n99", no:"1-3", name:"도전 99초", icon:"⏱️", type:"count", pts:[120,100,80,60,40,20], time:"11:00 – 11:30",
+   how:"학년별 체육 교과 수업(1학년: 줄넘기, 2학년: 얼티미트, 3학년: 농구)과 연계한 단체 경기 (남녀 경기 합산)",
+   notes:["학급별 전원 참가 (남학생 → 여학생 별도 진행)","남·여 개수를 합산하여 순위 결정 (많을수록 상위)","학년 총점이 동점일 경우 ‘도전 99초’ 점수로 등수 결정"]},
+  {id:"relay", no:"1-4", name:"학급 계주", icon:"🏃", type:"time", pts:[30,25,20,15,10,5], time:"11:45 – 12:00",
+   how:"학급별 대표 주자가 정해진 순서와 코스에 따라 이어 달리는 릴레이 경기",
+   notes:["학급별 대표 선수 참가 (남·여 각각 3명씩)","‘청백 계주’ 참가 학생과 중복 불가"]}
+];
+const TEAM_EVENTS = [
+  {id:"tire", no:"2-1", name:"타이어 레이스", icon:"🛞", pts:[25,20], time:"13:00 – 13:30", who:"팀당 50명",
+   how:"미니 타이어를 팀원이 차례로 굴려 반환점을 돌아 정해진 목표 지점까지 이어가는 단체 경기", per:"경기당"},
+  {id:"tug", no:"2-2", name:"단체 줄다리기", icon:"🪢", pts:[50,40], time:"13:30 – 14:00", who:"팀당 70명 (남→여)",
+   how:"학급별 대표 학생이 참여하는 줄다리기 경기", per:"경기당"},
+  {id:"crelay", no:"2-3", name:"청백 계주", icon:"🏁", pts:[50,45], time:"14:00 – 14:15", who:"팀당 18명",
+   how:"학급별 대표 주자가 정해진 순서와 코스에 따라 이어 달리는 릴레이 경기", per:""}
+];
+const SCHEDULE = [
+  {s:"08:30",e:"09:00",k:"r",t:"학급별 아침조회"},
+  {s:"09:00",e:"09:20",k:"r",t:"집합(준비운동) 및 개회사"},
+  {s:"09:20",e:"09:30",k:"r",t:"댄스부 공연"},
+  {s:"09:30",e:"10:15",k:"c",ev:"wave",t:"1-1 파도타기",sub:"3학년 → 2학년 → 1학년 순 (학년별 전체 학급)"},
+  {s:"10:15",e:"11:00",k:"c",ev:"typhoon",t:"1-2 태풍의 눈",sub:"3학년 → 2학년 → 1학년 순"},
+  {s:"11:00",e:"11:30",k:"c",ev:"n99",t:"1-3 도전 99초",sub:"3학년 → 2학년 → 1학년 순 (남→여)"},
+  {s:"11:30",e:"11:45",k:"e",t:"서바이벌 OX 퀴즈 및 행운권 추첨①",sub:"이벤트 · 전체"},
+  {s:"11:45",e:"12:00",k:"c",ev:"relay",t:"1-4 학급 계주",sub:"3학년 → 2학년 → 1학년 순 (학급 대표)"},
+  {s:"12:00",e:"12:50",k:"r",t:"점심식사"},
+  {s:"12:50",e:"13:00",k:"r",t:"밴드부 공연"},
+  {s:"13:00",e:"13:30",k:"t",ev:"tire",t:"2-1 타이어 레이스",sub:"청백대항 · 팀당 50명"},
+  {s:"13:30",e:"14:00",k:"t",ev:"tug",t:"2-2 단체 줄다리기",sub:"청백대항 · 팀당 70명 (남→여)"},
+  {s:"14:00",e:"14:15",k:"t",ev:"crelay",t:"2-3 청백 계주",sub:"청백대항 · 팀당 18명"},
+  {s:"14:15",e:"14:30",k:"e",t:"행운권 추첨② 및 순위 발표 / 폐회사",sub:"전 학년 · 운동장"}
+];
+// 간식 부스 (본관 우측 현관·가사실쪽 출입구, 09:30 ~ 11:20, 학급별 지정 시간에만 이용)
+// 간식 부스: [학년, 학급들, 시작, 종료]
+const SNACK = [[3,[1,2],"09:45","10:00"],[2,[1,2],"10:00","10:15"],[1,[1,2,3],"10:15","10:30"],[3,[3,4],"10:30","10:45"],
+  [2,[3,4],"10:45","11:00"],[1,[4,5],"11:00","11:10"],[3,[5],"11:10","11:20"],[2,[5,6],"11:20","11:30"]];
+const ALL_CLASSES = [];
+for (const g of [1,2,3]) for (let i=1;i<=GRADE_CLASSES[g];i++) ALL_CLASSES.push(`${g}-${i}`);
+
+/* ============ 저장소 (Firebase / 로컬) ============ */
+let state = {}, user = null, isAdmin = false, tab = "schedule", ready = false;
+let fb = null, ref = null;
+const LS_KEY = "bangi-sports-state";
+const $ = s => document.querySelector(s);
+const mem = {d:{}, get(k){ try{ return sessionStorage.getItem(k); }catch(e){ return this.d[k]??null; } }, set(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){ this.d[k]=String(v); } }};
+const mine = () => { try { return localStorage.getItem("bangi-my") || ""; } catch(e){ return ""; } };
+
+function nest(path, val){ return path.reduceRight((acc,k)=>({[k]:acc}), val); }
+function merge(a,b){ for (const k in b){ if (b[k] && typeof b[k]==="object" && !Array.isArray(b[k])){ a[k]=merge(a[k]&&typeof a[k]==="object"?a[k]:{}, b[k]); } else a[k]=b[k]; } return a; }
+
+async function save(path, val){
+  try{
+    if (fb) await ref.set(nest(path,val), {merge:true});
+    else { merge(state, nest(path,val)); try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} onState(); }
+    toast("저장됨 ✓");
+  }catch(e){ console.error(e); toast("저장 실패: 권한 또는 네트워크를 확인하세요"); }
+}
+async function resetAll(){
+  if (fb) await ref.set({}); else { state={}; try{ localStorage.removeItem(LS_KEY); }catch(e){} onState(); }
+  toast("초기화됨");
+}
+
+function init(){
+  if (FIREBASE_CONFIG){
+    firebase.initializeApp(FIREBASE_CONFIG);
+    fb = firebase; ref = firebase.firestore().doc("sports/state");
+    ref.onSnapshot(s=>{ state = s.data()||{}; ready=true; setStatus("● 실시간 연결됨"); onState(); },
+                   e=>{ console.error(e); setStatus("⚠ 연결 오류"); });
+    firebase.auth().onAuthStateChanged(u=>{ user=u; isAdmin = !!u && ADMIN_EMAILS.includes((u.email||"").toLowerCase()); renderTab(); });
+  } else {
+    try{ state = JSON.parse(localStorage.getItem(LS_KEY)||"{}"); }catch(e){ state={}; }
+    window.addEventListener("storage", e=>{ if(e.key===LS_KEY){ state=JSON.parse(e.newValue||"{}"); onState(); } });
+    isAdmin = true; ready = true; setStatus("로컬 데모 모드 (이 기기에만 저장)"); onState();
+  }
+}
+function setStatus(t){ $("#status").textContent = t; }
+
+/* ============ 점수 계산 ============ */
+function parseNum(s){
+  s = String(s).trim(); if (!s) return null;
+  if (s.includes(":")){ const [m,sec] = s.split(":"); const v = parseFloat(m)*60+parseFloat(sec); return isNaN(v)?null:v; }
+  const v = parseFloat(s); return isNaN(v)?null:v;
+}
+function fmtTime(sec){ if (sec==null) return "-"; return sec>=60 ? `${Math.floor(sec/60)}분 ${(sec%60).toFixed(2).replace(/\.?0+$/,"")}초` : `${+sec.toFixed(2)}초`; }
+function recordOf(ev, cls){
+  const r = state.results?.[ev.id]?.[cls]; if (!r) return null;
+  if (ev.type==="count"){ if (r.m==null && r.f==null) return null; return (r.m||0)+(r.f||0); }
+  return r.v==null ? null : r.v;
+}
+function rankEvent(ev, g){
+  const list = [];
+  for (let i=1;i<=GRADE_CLASSES[g];i++){ const c=`${g}-${i}`, v=recordOf(ev,c); if (v!=null) list.push({c,v}); }
+  const better = (a,b)=> ev.type==="count" ? a>b : a<b;
+  const out = {};
+  list.forEach(x=>{ const rank = 1 + list.filter(y=>better(y.v,x.v)).length; out[x.c] = {v:x.v, rank, pts:ev.pts[rank-1]||0}; });
+  return out;
+}
+function gradeTable(g){
+  const per = CLASS_EVENTS.map(ev=>rankEvent(ev,g)), {sc} = teamScore();
+  const rows = [];
+  for (let i=1;i<=GRADE_CLASSES[g];i++){
+    const c=`${g}-${i}`, team = state.teams?.[c] || "";
+    const cls = per.reduce((s,p)=>s+(p[c]?.pts||0),0), tp = team ? sc[team] : 0;
+    rows.push({c, team, ev:per.map(p=>p[c]||null), cls, tp, total:cls+tp, n99:per[2][c]});
+  }
+  const key = r => [r.total, r.n99?.pts||0, r.n99?.v||0];
+  const cmp = (a,b)=>{ const x=key(a), y=key(b); for(let i=0;i<3;i++) if(x[i]!==y[i]) return y[i]-x[i]; return 0; };
+  rows.sort(cmp);
+  rows.forEach((r,i)=>{ r.rank = (i>0 && cmp(rows[i-1],r)===0) ? rows[i-1].rank : i+1; });
+  return rows;
+}
+function teamScore(){
+  const sc = {청:0, 백:0}, detail = {};
+  TEAM_EVENTS.forEach(ev=>{
+    const rounds = state.team?.[ev.id] || []; detail[ev.id] = rounds;
+    rounds.forEach(w=>{ if (w==="청"||w==="백"){ sc[w]+=ev.pts[0]; sc[w==="청"?"백":"청"]+=ev.pts[1]; } });
+  });
+  return {sc, detail};
+}
+
+/* ============ 렌더링 ============ */
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast.h); toast.h=setTimeout(()=>el.classList.remove("on"),1400); }
+function mins(hm){ const [h,m]=hm.split(":").map(Number); return h*60+m; }
+function nowMin(){
+  const q = new URLSearchParams(location.search).get("t"); // 미리보기용: ?t=10:20
+  if (q) return mins(q);
+  const d = new Date(), ymd = d.toLocaleDateString("sv-SE");
+  return ymd===EVENT_DATE ? d.getHours()*60+d.getMinutes() : null;
+}
+function setTab(t){ tab=t; location.hash=t; document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t)); renderTab(); window.scrollTo(0,0); }
+function onState(){
+  if (tab==="admin" && isAdmin) syncAdmin(); else renderTab();
+}
+function renderTab(){
+  const v = $("#view");
+  if (tab==="schedule") v.innerHTML = viewSchedule();
+  else if (tab==="events") v.innerHTML = viewEvents();
+  else if (tab==="score") v.innerHTML = viewScore();
+  else renderAdmin();
+}
+
+function myTeam(){ const c=mine(); return c ? state.teams?.[c] : null; }
+const fold = {};
+function toggleFold(id){ fold[id] = !fold[id]; renderTab(); }
+function partOf(s){ const m=mins(s.s); return m<570?"pre":m<720?"p1":m<780?"mid":m<855?"p2":"end"; }
+function viewSchedule(){
+  const now = nowMin(), my = mine();
+  if (fold.p1===undefined) fold.p1 = now!=null && now>=720;
+  const opts = `<option value="">내 반 선택 안 함</option>` + ALL_CLASSES.map(c=>`<option value="${c}" ${c===my?"selected":""}>${c.replace("-","학년 ")}반</option>`).join("");
+  const tm = myTeam();
+  const tags = {c:"학급대항",t:"청백전",e:"이벤트",r:""};
+  const snackHtml = s=>{
+    if (s.k!=="c") return "";
+    const list = SNACK.filter(x=>mins(x[2])>=mins(s.s) && mins(x[2])<mins(s.e));
+    if (!list.length) return "";
+    return `<div class="snackbox"><div class="sh">🍢 간식 부스 이용 시간</div>` + list.map(([g,cs,a,b])=>{
+      const me = my && my.startsWith(g+"-") && cs.includes(+my.split("-")[1]);
+      const st = now==null ? "" : now>=mins(b) ? "done" : now>=mins(a) ? "now" : "";
+      return `<div class="sn ${me?"me":""} ${st}"><span class="tm2">${a}~${b}</span> <b>${g}학년 ${cs.join(", ")}반</b>${st==="now"?" 🍢":""}</div>`;
+    }).join("") + `</div>`;
+  };
+  const rowHtml = s=>{
+    const cls = now==null ? "" : now>=mins(s.e) ? "done" : now>=mins(s.s) ? "now" : "";
+    const tag = s.k!=="r" ? `<span class="tag ${s.k}">${tags[s.k]}</span>` : "";
+    return `<div class="tl ${cls}"><div class="t">${s.s}<br><span class="muted">~ ${s.e}</span></div><div class="b">${tag}<b>${s.t}</b>${cls==="now"?" 🔴 진행 중":""}${s.sub?`<small>${s.sub}</small>`:""}${snackHtml(s)}</div></div>`;
+  };
+  let h = `<div class="card"><div class="row"><b>👤 내 반</b><select onchange="setMine(this.value)">${opts}</select>${my&&tm?`<span class="tm ${tm==="청"?"b":"w"}">${tm}팀</span>`:""}</div></div>`;
+  const parts = [["pre",null],["p1","1부 학급대항전","09:30 ~ 12:00"],["mid",null],["p2","2부 청백대항전","13:00 ~ 14:15"],["end",null]];
+  parts.forEach(([id,title,range])=>{
+    const rows = SCHEDULE.filter(s=>partOf(s)===id).map(rowHtml).join("");
+    if (!title){ h += `<div class="card">${rows}</div>`; return; }
+    const open = !fold[id];
+    h += `<div class="card"><button class="fold" onclick="toggleFold('${id}')"><span>${open?"▼":"▶"} ${title}</span><span class="muted">${range} · ${open?"접기":"펼치기"}</span></button>${open?(id==="p1"?`<div class="notebar">🍢 간식 부스: 본관 우측 현관(가사실쪽 출입구) · 떡꼬치, 음료 등 · 09:45~11:30, 학급별 지정된 시간에만 이용</div>`:"")+rows:""}</div>`;
+  });
+  return h;
+}
+function setMine(v){ try{ localStorage.setItem("bangi-my", v); }catch(e){} renderTab(); }
+
+function viewEvents(){
+  const pt = a => `<div class="pt">${a.map((p,i)=>`<span>${i+1}등 ${p}점</span>`).join("")}</div>`;
+  let h = `<div class="card"><h3>🏅 대회 방식</h3><ul class="n">
+    <li><b>1부 학급대항전</b>: 학년별 반 대항 경기 후 등수에 따라 점수 부여 → 청백전 점수와 합산하여 학년별 순위 결정</li>
+    <li><b>2부 청백대항전</b>: 학급별 학생들이 청·백팀으로 나와 승패에 따라 점수 부여</li>
+    <li>학년 총점 동점 시 ‘도전 99초’ 점수로 등수 결정 · 응원 및 질서 우수 학급 1반씩 선정</li></ul></div>`;
+  h += `<h3 style="margin:16px 4px 8px">1부 · 학급대항전</h3>`;
+  CLASS_EVENTS.forEach(ev=>{ h += `<div class="card ev"><h3>${ev.icon} ${ev.no} ${ev.name}<small>${ev.time}</small></h3>${ev.how}${pt(ev.pts)}<ul class="n">${ev.notes.map(n=>`<li>${n}</li>`).join("")}</ul>
+    <div class="muted" style="margin-top:6px">기록: ${ev.type==="count"?"개수 (많을수록 상위)":"시간 (짧을수록 상위)"}</div></div>`; });
+  h += `<h3 style="margin:16px 4px 8px">2부 · 청백대항전</h3>`;
+  TEAM_EVENTS.forEach(ev=>{ h += `<div class="card ev"><h3>${ev.icon} ${ev.no} ${ev.name}<small>${ev.time}</small></h3>${ev.how}
+    <div class="pt"><span>${ev.per} 이긴 팀 ${ev.pts[0]}점</span><span>진 팀 ${ev.pts[1]}점</span><span>${ev.who}</span></div></div>`; });
+  h += `<div class="card"><h3>⚠️ 유의사항</h3><ul class="n">
+    <li>체육복·운동화 착용 후 지정된 학급 자리에 위치</li><li>간식 부스 운영 시간 준수, 그 외 시간은 지정 장소에서 이동하지 않기</li>
+    <li>안전한 응원도구만 사용, 인화성·위험 물품 소지 금지</li><li>쓰레기는 반별 봉투에 담고 행사 후 자율청소 실시</li><li>분실 위험이 있는 귀중품은 소지하지 않기</li></ul></div>`;
+  return h;
+}
+
+function viewScore(){
+  const {sc} = teamScore();
+  const lead = sc.청===sc.백 ? "" : sc.청>sc.백 ? "청" : "백";
+  const teamCard = `<div class="card"><h3>청백대항전</h3><div class="team">
+    <div class="blue ${lead==="청"?"win":""}">청팀<b>${sc.청}</b>점</div><div class="white ${lead==="백"?"win":""}">백팀<b>${sc.백}</b>점</div></div>
+    <div class="muted wins" style="margin-top:8px">${TEAM_EVENTS.map(ev=>{ const r=state.team?.[ev.id]||[]; return `${ev.name} ${r.length?r.map(w=>w==="청"?"🔵청 승":w==="백"?"⚪백 승":"·").join(" / "):"대기"}`; }).join("<br>")}</div></div>`;
+  let h = "";
+  h += `<div class="card"><h3>🏆 종합 순위 <small class="muted">학급대항 + 청백대항 합계 (학년별 순위)</small></h3><div class="scroll"><table class="tot">
+    <tr><th>순위</th><th class="l">학급</th>${CLASS_EVENTS.map(e=>`<th>${e.name.replace("도전 ","")}</th>`).join("")}<th>학급<br>소계</th><th>청백</th><th>합계</th></tr>`;
+  [3,2,1].forEach(g=>{
+    h += `<tr class="gh g${g}"><td colspan="9" class="l">${g}학년 <span class="gsub">${GRADE_CLASSES[g]}개 학급</span></td></tr>`;
+    gradeTable(g).forEach(r=>{
+      const started = r.total>0 || r.ev.some(Boolean);
+      const tm = r.team ? `<span class="tm ${r.team==="청"?"b":"w"}">${r.team}</span>` : "";
+      h += `<tr class="gr g${g}"><td>${started?`<span class="rk ${r.rank<=3?"r"+r.rank:""}">${r.rank}</span>`:"-"}</td><td class="l"><b>${r.c.replace("-","학년 ")}반</b> ${tm}</td>`;
+      r.ev.forEach((x,i)=>{ h += x ? `<td><b>${x.pts}</b><small>${CLASS_EVENTS[i].type==="count"?x.v+"개":fmtTime(x.v)}</small></td>` : `<td class="muted">-</td>`; });
+      h += `<td>${r.cls}</td><td>${r.team?r.tp:"-"}</td><td><b style="font-size:16px">${r.total}</b></td></tr>`;
+    });
+  });
+  h += `</table></div><p class="muted" style="margin:8px 0 0">※ 합계 = 학급대항 4종목 점수 + 소속 팀(청/백)의 청백대항 점수. 팀 배정 전에는 청백 점수가 ‘-’로 표시됩니다. 동점 시 ‘도전 99초’ 점수 순.</p></div>`;
+  h += teamCard;
+  const sp = state.spirit || [];
+  if (sp.length) h += `<div class="card"><h3>📣 응원 및 질서 우수 학급</h3>${sp.map(c=>`<span class="tm b">${c.replace("-","학년 ")}반</span>`).join(" ")}</div>`;
+  return h;
+}
+
+/* ============ 관리자 ============ */
+function renderAdmin(){
+  const v = $("#view");
+  if (fb && !isAdmin){
+    v.innerHTML = `<div class="card"><h3>🔒 관리자 로그인</h3>
+      <p class="muted">구글 계정으로 한 번 로그인하면 이 기기에서는 이후 비밀번호 입력 없이 자동으로 관리자 모드가 유지됩니다.</p>
+      ${user ? `<p>로그인됨: <b>${user.email}</b><br><span style="color:var(--bad)">이 계정은 관리자로 등록되어 있지 않습니다.</span></p><button class="btn" onclick="logout()">로그아웃</button>`
+             : `<button class="btn pri" onclick="login()">Google 계정으로 로그인</button>
+               <div class="muted" style="margin:14px 0 6px">또는 아이디(이메일 형식) / 비밀번호로 로그인</div>
+               <div class="row"><input id="em" type="email" placeholder="아이디 (bangi2026@gmail.com)" autocomplete="username" style="flex:1;min-width:150px"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" style="flex:1;min-width:120px"><button class="btn pri" onclick="loginEmail()">로그인</button></div>`}</div>`;
+    return;
+  }
+  const g = +(mem.get("bangi-ag")||3);
+  let h = fb ? `<div class="card row"><span>👤 ${user.email}</span><span class="muted">자동 로그인 유지 중</span><button class="btn" style="margin-left:auto" onclick="logout()">로그아웃</button></div>`
+             : `<div class="banner">로컬 데모 모드입니다. 입력한 점수는 이 기기에만 저장되며 다른 사람에게 공유되지 않습니다. (Firebase 연결: SETUP.md)</div>`;
+  h += `<div class="card"><h3>🔵⚪ 청·백팀 선택 <small class="muted">학급별로 눌러서 선택 (다시 누르면 해제)</small></h3>` + [3,2,1].map(gr=>`<div class="arow"><span class="nm">${gr}학년</span>` + Array.from({length:GRADE_CLASSES[gr]},(_,i)=>{ const c=`${gr}-${i+1}`;
+      return `<span class="row" style="gap:3px"><b>${c}</b><button class="chip b" data-t="${c}|청" onclick="pickTeam('${c}','청')">청</button><button class="chip w" data-t="${c}|백" onclick="pickTeam('${c}','백')">백</button></span>`; }).join("") + `</div>`).join("") + `</div>`;
+  h += `<div class="chips">${[3,2,1].map(x=>`<button class="chip ${x===g?"on":""}" onclick="setAG(${x})">${x}학년</button>`).join("")}</div>`;
+  CLASS_EVENTS.forEach(ev=>{
+    h += `<div class="card"><h3>${ev.icon} ${ev.no} ${ev.name} <small class="muted">${ev.type==="count"?"개수 입력":"기록(초) 입력 · 예: 45.3 또는 1:05.3"}</small></h3>`;
+    for (let i=1;i<=GRADE_CLASSES[g];i++){
+      const c=`${g}-${i}`;
+      h += `<div class="arow"><span class="nm">${g}-${i}</span>` + (ev.type==="count"
+        ? `<input class="in" inputmode="numeric" placeholder="남 개수" data-ev="${ev.id}" data-c="${c}" data-f="m"><input class="in" inputmode="numeric" placeholder="여 개수" data-ev="${ev.id}" data-c="${c}" data-f="f">`
+        : `<input class="in" inputmode="decimal" placeholder="초" data-ev="${ev.id}" data-c="${c}" data-f="v">`)
+        + `<span class="pv" data-pv="${ev.id}|${c}"></span></div>`;
+    }
+    h += `</div>`;
+  });
+  h += `<div class="card"><h3>🔵⚪ 청백대항전 결과 <small class="muted">이긴 팀을 선택</small></h3>` + TEAM_EVENTS.map(ev=>`<div style="margin:10px 0"><b>${ev.icon} ${ev.no} ${ev.name}</b> <small class="muted">(승 ${ev.pts[0]} / 패 ${ev.pts[1]})</small><div id="rounds-${ev.id}"></div>
+      <button class="btn" onclick="addRound('${ev.id}')">+ 경기 추가</button></div>`).join("") + `</div>`;
+  h += `<div class="card"><h3>📣 응원 및 질서 우수 학급 <small class="muted">(3개 학급)</small></h3><div class="row" id="spirit">` +
+    ALL_CLASSES.map(c=>`<button class="chip" data-sp="${c}" onclick="toggleSpirit('${c}')">${c}</button>`).join("") + `</div></div>`;
+  h += `<div class="card"><h3>⚠️ 초기화</h3><button class="btn danger" onclick="if(confirm('모든 경기 결과를 삭제합니다. 되돌릴 수 없습니다. 계속할까요?'))resetAll()">전체 결과 초기화</button></div>`;
+  $("#view").innerHTML = h;
+  document.querySelectorAll("input[data-ev]").forEach(inp=>inp.addEventListener("change", onInput));
+  syncAdmin();
+}
+function setAG(g){ mem.set("bangi-ag", g); renderAdmin(); }
+function syncAdmin(){
+  const g = +(mem.get("bangi-ag")||3);
+  document.querySelectorAll("input[data-ev]").forEach(inp=>{
+    if (document.activeElement===inp) return;
+    const r = state.results?.[inp.dataset.ev]?.[inp.dataset.c]; const x = r?.[inp.dataset.f];
+    inp.value = x==null ? "" : x;
+  });
+  CLASS_EVENTS.forEach(ev=>{
+    const rk = rankEvent(ev,g);
+    document.querySelectorAll(`[data-pv^="${ev.id}|"]`).forEach(sp=>{ const x = rk[sp.dataset.pv.split("|")[1]]; sp.textContent = x ? `${x.rank}위 · ${x.pts}점` : ""; });
+  });
+  TEAM_EVENTS.forEach(ev=>{
+    const box = document.getElementById("rounds-"+ev.id); if (!box) return;
+    const rs = state.team?.[ev.id] || [];
+    const list = rs.length ? rs : [""];
+    box.innerHTML = list.map((w,i)=>`<div class="rnd"><span class="muted">${i+1}경기</span>
+      <button class="chip b ${w==="청"?"on":""}" onclick="setRound('${ev.id}',${i},'청')">청 승</button>
+      <button class="chip w ${w==="백"?"on":""}" onclick="setRound('${ev.id}',${i},'백')">백 승</button>
+      <button class="chip" onclick="setRound('${ev.id}',${i},'')">취소</button></div>`).join("");
+  });
+  document.querySelectorAll("[data-sp]").forEach(b=>b.classList.toggle("on",(state.spirit||[]).includes(b.dataset.sp)));
+  document.querySelectorAll("[data-t]").forEach(b=>{ const [c,t]=b.dataset.t.split("|"); b.classList.toggle("on", state.teams?.[c]===t); });
+}
+function onInput(e){
+  const {ev,c,f} = e.target.dataset;
+  const val = parseNum(e.target.value);
+  if (e.target.value.trim() && val==null){ toast("숫자를 입력하세요"); return; }
+  save(["results",ev,c], {[f]: val});
+}
+function addRound(id){ const r = [...(state.team?.[id]||[""])]; r.push(""); save(["team",id], r); }
+function setRound(id,i,w){ const r = [...(state.team?.[id]||[""])]; r[i]=w; save(["team",id], r); }
+function toggleSpirit(c){ const s = new Set(state.spirit||[]); s.has(c)?s.delete(c):s.add(c); save(["spirit"], [...s]); }
+function pickTeam(c,t){ save(["teams",c], state.teams?.[c]===t ? "" : t); }
+
+async function login(){
+  const auth = firebase.auth(), p = new firebase.auth.GoogleAuthProvider();
+  try{ await auth.signInWithPopup(p); }
+  catch(e){ if (e.code!=="auth/popup-closed-by-user") try{ await auth.signInWithRedirect(p); }catch(err){ toast("로그인 실패: "+err.code); } }
+}
+async function loginEmail(){
+  const e = $("#em").value.trim().toLowerCase(), p = $("#pw").value;
+  if (!e || !p){ toast("아이디와 비밀번호를 입력하세요"); return; }
+  try{ await firebase.auth().signInWithEmailAndPassword(e,p); }
+  catch(err){ toast(["auth/invalid-credential","auth/wrong-password","auth/user-not-found","auth/invalid-login-credentials"].includes(err.code) ? "아이디 또는 비밀번호가 틀렸습니다" : "로그인 실패: "+err.code); }
+}
+function logout(){ firebase.auth().signOut(); }
+
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+init();
+{const h=(location.hash||"").slice(1);setTab(["schedule","events","score","admin"].includes(h)?h:"schedule");}
+setInterval(()=>{ if (tab==="schedule") renderTab(); }, 60000);
+</script>
+</body>
+</html>
