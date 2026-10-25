@@ -204,6 +204,29 @@ table.tot td:first-child{overflow:visible}
 .tl.now{margin:0 -10px;padding:10px}
 .tl .b .tag.e{display:table;margin:0 0 3px}
 .tl .b b{overflow:hidden;text-overflow:clip;vertical-align:bottom}
+/* ===== 줄바꿈 / 관리자 입력 ===== */
+body{word-break:keep-all;overflow-wrap:break-word}
+.ev .desc{font-size:clamp(14px,4.2vw,17px);line-height:1.55;margin:2px 0 4px}
+.ev ul.n li{font-size:clamp(12.5px,3.7vw,15px)}
+.arow{flex-wrap:wrap}
+.arow .nm{width:44px;font-size:15px}
+.rkbtns{display:flex;gap:5px;flex:1;min-width:0}
+.rkbtns .rb{flex:1;min-width:0;padding:11px 0;font-size:17px;font-weight:800;text-align:center;border-radius:12px;background:#0d1322}
+.rkbtns .rb.on{background:var(--pri2);border-color:var(--pri2);color:#fff;box-shadow:0 4px 12px rgba(229,36,92,.4)}
+.arow .pv{flex:0 0 100%;text-align:right;min-width:0;min-height:18px;font-size:14px;color:var(--pri);font-weight:700;margin-top:-2px}
+.savebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.savebtn{flex:0 0 auto;font-size:18px;font-weight:800;padding:13px 26px;border-radius:14px}
+.savebtn.pri{box-shadow:0 6px 18px rgba(229,36,92,.45)}
+.sv{font-size:14px}
+.sv.dirty{color:#f5b301;font-weight:700}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;padding:24px}
+.modal.on{display:flex}
+.mbox{background:var(--card);border:2px solid #22c55e;border-radius:22px;padding:26px 22px 20px;width:min(340px,100%);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.mbox.warn{border-color:#f5b301}
+.mbox .mi{font-size:52px;line-height:1.1}
+.mbox .mt{font-size:24px;font-weight:900;margin:8px 0 4px}
+.mbox .ms{font-size:16px;color:var(--sub);margin-bottom:16px}
+.mbox .btn{width:100%;font-size:18px;padding:12px}
 </style>
 </head>
 <body>
@@ -247,16 +270,16 @@ const EVENT_DATE = "2026-10-30";
 /* ============ 계획서 데이터 ============ */
 const GRADE_CLASSES = {1:5, 2:6, 3:5};
 const CLASS_EVENTS = [
-  {id:"wave", no:"1-1", name:"파도타기", icon:"🌊", type:"time", pts:[60,50,40,30,20,10], time:"09:30 – 10:15",
+  {id:"wave", no:"1-1", name:"파도타기", icon:"🌊", type:"rank", pts:[60,50,40,30,20,10], time:"09:30 – 10:15",
    how:"줄을 2명씩 들고 발밑과 머리 위를 통과하여 반환점을 돌아오는 단체 릴레이 경기",
-   notes:["학급별 전원 참가 (2인 1조)","1학년 5번 줄까지 / 2학년 6번 줄까지 / 3학년 7번 줄까지","줄잡이 인원: 1~5(6,7)번, 남은 인원: 6(7,8)번~"]},
-  {id:"typhoon", no:"1-2", name:"태풍의 눈", icon:"🌀", type:"time", pts:[90,75,60,45,30,15], time:"10:15 – 11:00",
+   notes:["학급별 전원 참가 (2인 1조)","1학년 5번 / 2학년 6번 / 3학년 7번 줄까지","줄잡이 인원: 1~5(6,7)번, 남은 인원: 6(7,8)번~"]},
+  {id:"typhoon", no:"1-2", name:"태풍의 눈", icon:"🌀", type:"rank", pts:[90,75,60,45,30,15], time:"10:15 – 11:00",
    how:"에어봉을 4명씩 들고 다같이 뛰어서 3개의 반환점을 돌아오는 단체 릴레이 경기",
-   notes:["학급별 전원 참가 (4인 1조)","1학년 6번 줄까지 / 2학년 7번 줄까지 / 3학년 8번 줄까지","2회 참가 학생: 처음과 마지막에 배정, 해당 학생 별(★) 표시"]},
+   notes:["학급별 전원 참가 (4인 1조)","1학년 6번 / 2학년 7번 / 3학년 8번 줄까지","2회 참가 학생은 처음·마지막에 배정, 별(★) 표시"]},
   {id:"n99", no:"1-3", name:"도전 99초", icon:"⏱️", type:"count", pts:[120,100,80,60,40,20], time:"11:00 – 11:30",
    how:"학년별 체육 교과 수업(1학년: 줄넘기, 2학년: 얼티미트, 3학년: 농구)과 연계한 단체 경기 (남녀 경기 합산)",
    notes:["학급별 전원 참가 (남학생 → 여학생 별도 진행)","남·여 개수를 합산하여 순위 결정 (많을수록 상위)","학년 총점이 동점일 경우 ‘도전 99초’ 점수로 등수 결정"]},
-  {id:"relay", no:"1-4", name:"학급 계주", icon:"🏃", type:"time", pts:[30,25,20,15,10,5], time:"11:45 – 12:00",
+  {id:"relay", no:"1-4", name:"학급 계주", icon:"🏃", type:"rank", pts:[30,25,20,15,10,5], time:"11:45 – 12:00",
    how:"학급별 대표 주자가 정해진 순서와 코스에 따라 이어 달리는 릴레이 경기",
    notes:["학급별 대표 선수 참가 (남·여 각각 3명씩)","‘청백 계주’ 참가 학생과 중복 불가"]}
 ];
@@ -306,7 +329,7 @@ async function save(path, val){
   try{
     if (fb) await ref.set(nest(path,val), {merge:true});
     else { merge(state, nest(path,val)); try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} onState(); }
-    toast("저장됨 ✓");
+    toast("저장되었습니다 ✓");
   }catch(e){ console.error(e); toast("저장 실패: 권한 또는 네트워크를 확인하세요"); }
 }
 async function resetAll(){
@@ -336,17 +359,17 @@ function parseNum(s){
   const v = parseFloat(s); return isNaN(v)?null:v;
 }
 function fmtTime(sec){ if (sec==null) return "-"; return sec>=60 ? `${Math.floor(sec/60)}분 ${(sec%60).toFixed(2).replace(/\.?0+$/,"")}초` : `${+sec.toFixed(2)}초`; }
-function recordOf(ev, cls){
-  const r = state.results?.[ev.id]?.[cls]; if (!r) return null;
+const isRank = ev => ev.type==="rank";
+function recordOf(ev, cls, res){
+  const r = (res||state.results)?.[ev.id]?.[cls]; if (!r) return null;
   if (ev.type==="count"){ if (r.m==null && r.f==null) return null; return (r.m||0)+(r.f||0); }
-  return r.v==null ? null : r.v;
+  return r.r==null ? null : r.r;
 }
-function rankEvent(ev, g){
-  const list = [];
-  for (let i=1;i<=GRADE_CLASSES[g];i++){ const c=`${g}-${i}`, v=recordOf(ev,c); if (v!=null) list.push({c,v}); }
-  const better = (a,b)=> ev.type==="count" ? a>b : a<b;
-  const out = {};
-  list.forEach(x=>{ const rank = 1 + list.filter(y=>better(y.v,x.v)).length; out[x.c] = {v:x.v, rank, pts:ev.pts[rank-1]||0}; });
+function rankEvent(ev, g, res){
+  const list = [], out = {};
+  for (let i=1;i<=GRADE_CLASSES[g];i++){ const c=`${g}-${i}`, v=recordOf(ev,c,res); if (v!=null) list.push({c,v}); }
+  if (isRank(ev)){ list.forEach(x=>{ out[x.c] = {v:x.v, rank:x.v, pts:ev.pts[x.v-1]||0}; }); return out; }
+  list.forEach(x=>{ const rank = 1 + list.filter(y=>y.v>x.v).length; out[x.c] = {v:x.v, rank, pts:ev.pts[rank-1]||0}; });
   return out;
 }
 function gradeTable(g){
@@ -386,20 +409,20 @@ function onState(){
   if (tab==="admin" && isAdmin) syncAdmin(); else renderTab();
 }
 function fitText(){
-  document.querySelectorAll(".tl .b b, .notebar").forEach(el=>{
+  document.querySelectorAll(".tl .b b, .notebar, .ev li").forEach(el=>{
     let s = parseFloat(getComputedStyle(el).fontSize);
     el.style.whiteSpace = "nowrap";
-    el.style.display = el.tagName==="B" ? "inline-block" : "block";
+    if (el.tagName==="B") el.style.display="inline-block"; else if (el.tagName!=="LI") el.style.display="block";
     el.style.maxWidth = "100%";
     while (el.scrollWidth > el.clientWidth+1 && s>12.5){ s -= .5; el.style.fontSize = s+"px"; }
     if (el.scrollWidth > el.clientWidth+1) el.style.whiteSpace = "normal";
   });
 }
-window.addEventListener("resize", ()=>{ if (tab==="schedule") renderTab(); });
+window.addEventListener("resize", ()=>{ if (tab==="schedule"||tab==="events") renderTab(); });
 function renderTab(){
   const v = $("#view");
   if (tab==="schedule"){ v.innerHTML = viewSchedule(); fitText(); }
-  else if (tab==="events") v.innerHTML = viewEvents();
+  else if (tab==="events"){ v.innerHTML = viewEvents(); fitText(); }
   else if (tab==="score") v.innerHTML = viewScore();
   else renderAdmin();
 }
@@ -448,10 +471,10 @@ function viewEvents(){
     <li><b>2부 청백대항전</b>: 학급별 학생들이 청·백팀으로 나와 승패에 따라 점수 부여</li>
     <li>학년 총점 동점 시 ‘도전 99초’ 점수로 등수 결정 · 응원 및 질서 우수 학급 1반씩 선정</li></ul></div>`;
   h += `<h3 style="margin:16px 4px 8px">1부 · 학급대항전</h3>`;
-  CLASS_EVENTS.forEach(ev=>{ h += `<div class="card ev"><h3>${ev.icon} ${ev.no} ${ev.name}<small>${ev.time}</small></h3>${ev.how}${pt(ev.pts)}<ul class="n">${ev.notes.map(n=>`<li>${n}</li>`).join("")}</ul>
-    <div class="muted" style="margin-top:6px">기록: ${ev.type==="count"?"개수 (많을수록 상위)":"시간 (짧을수록 상위)"}</div></div>`; });
+  CLASS_EVENTS.forEach(ev=>{ h += `<div class="card ev"><h3>${ev.icon} ${ev.no} ${ev.name}<small>${ev.time}</small></h3><div class="desc">${ev.how}</div>${pt(ev.pts)}<ul class="n">${ev.notes.map(n=>`<li>${n}</li>`).join("")}</ul>
+    <div class="muted" style="margin-top:6px">결과: ${ev.type==="count"?"개수 (많을수록 상위)":"순위 입력"}</div></div>`; });
   h += `<h3 style="margin:16px 4px 8px">2부 · 청백대항전</h3>`;
-  TEAM_EVENTS.forEach(ev=>{ h += `<div class="card ev"><h3>${ev.icon} ${ev.no} ${ev.name}<small>${ev.time}</small></h3>${ev.how}
+  TEAM_EVENTS.forEach(ev=>{ h += `<div class="card ev"><h3>${ev.icon} ${ev.no} ${ev.name}<small>${ev.time}</small></h3><div class="desc">${ev.how}</div>
     <div class="pt"><span>${ev.per} 이긴 팀 ${ev.pts[0]}점</span><span>진 팀 ${ev.pts[1]}점</span><span>${ev.who}</span></div></div>`; });
   h += `<div class="card"><h3>⚠️ 유의사항</h3><ul class="n">
     <li>체육복·운동화 착용 후 지정된 학급 자리에 위치</li><li>간식 부스 운영 시간 준수, 그 외 시간은 지정 장소에서 이동하지 않기</li>
@@ -484,11 +507,11 @@ function viewScore(){
       const medal = done[g] && r.rank<=2 ? (r.rank===1?"🥇":"🥈") : null;
       const tm = r.team ? `<span class="tm ${r.team==="청"?"b":"w"}">${r.team}</span>` : "";
       h += `<tr class="gr g${g} ${medal?"top":""}"><td>${medal?`<span class="medal">${medal}</span>`:started?`<span class="rk ${r.rank<=3?"r"+r.rank:""}">${r.rank}</span>`:"-"}</td><td class="l"><b>${r.c.split("-")[1]}반</b>${tm}</td>`;
-      r.ev.forEach((x,i)=>{ h += x ? `<td><b>${x.pts}</b><small>${CLASS_EVENTS[i].type==="count"?x.v:fmtShort(x.v)}</small></td>` : `<td class="muted">-</td>`; });
+      r.ev.forEach((x,i)=>{ h += x ? `<td><b>${x.pts}</b><small>${CLASS_EVENTS[i].type==="count"?x.v:x.rank+"등"}</small></td>` : `<td class="muted">-</td>`; });
       h += `<td>${r.cls}</td><td>${r.team?r.tp:"-"}</td><td><b class="tt">${r.total}</b></td></tr>`;
     });
   });
-  h += `</table></div><p class="muted" style="margin:8px 0 0">※ 작은 숫자는 기록(초 또는 개수). 합계 = 학급대항 점수 + 소속 팀의 청백대항 점수. 모든 경기 결과와 팀 배정이 끝난 학년은 1·2위가 🥇🥈로 표시됩니다.</p></div>`;
+  h += `</table></div><p class="muted" style="margin:8px 0 0">※ 작은 숫자는 순위 또는 99초 개수. 합계 = 학급대항 점수 + 소속 팀의 청백대항 점수. 모든 경기 결과와 팀 배정이 끝난 학년은 1·2위가 🥇🥈로 표시됩니다.</p></div>`;
   h += `<div class="card"><h3>청백대항전</h3><div class="team">
     <div class="blue ${lead==="청"?"win":""}">청팀<b>${sc.청}</b>점</div><div class="white ${lead==="백"?"win":""}">백팀<b>${sc.백}</b>점</div></div>
     <div class="muted wins" style="margin-top:8px">${TEAM_EVENTS.map(ev=>{ const r=state.team?.[ev.id]||[]; return `${ev.name} ${r.length?r.map(w=>w==="청"?"🔵청 승":w==="백"?"⚪백 승":"·").join(" / "):"대기"}`; }).join("<br>")}</div></div>`;
@@ -498,6 +521,55 @@ function viewScore(){
 }
 
 /* ============ 관리자 ============ */
+const draft = {res:{}, team:{}}, lastSaved = {};
+const resOf = (id,c) => draft.res[id]?.[c] ?? state.results?.[id]?.[c];
+const roundsOf = id => draft.team[id] ?? state.team?.[id] ?? [];
+const dirtyEv = id => Object.keys(draft.res[id]||{}).length>0;
+const dirtyTeam = () => Object.keys(draft.team).length>0;
+function mergedResults(){
+  const out = JSON.parse(JSON.stringify(state.results||{}));
+  for (const e in draft.res) for (const c in draft.res[e]){ if (!out[e]) out[e]={}; out[e][c] = draft.res[e][c]; }
+  return out;
+}
+function showSaved(title, sub, warn){
+  let m = $("#modal"); if (!m){ m = document.createElement("div"); m.id="modal"; document.body.appendChild(m); }
+  m.className = "modal on";
+  m.innerHTML = `<div class="mbox ${warn?"warn":""}"><div class="mi">${warn?"⚠️":"✅"}</div><div class="mt">${title}</div><div class="ms">${sub||""}</div><button class="btn pri" onclick="hideSaved()">확인</button></div>`;
+  clearTimeout(showSaved.h); if (!warn) showSaved.h = setTimeout(hideSaved, 2400);
+}
+function hideSaved(){ const m=$("#modal"); if (m) m.className="modal"; }
+async function commit(obj){
+  try{
+    if (fb) await ref.set(obj, {merge:true});
+    else { merge(state, JSON.parse(JSON.stringify(obj))); try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+    return true;
+  }catch(e){ console.error(e); showSaved("저장하지 못했습니다", "로그인 상태와 인터넷 연결을 확인한 뒤 다시 눌러 주세요.", true); return false; }
+}
+const nowHM = () => { const d=new Date(); return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"); };
+async function saveEvent(id){
+  const ev = CLASS_EVENTS.find(e=>e.id===id);
+  if (!dirtyEv(id)){ showSaved("변경된 내용이 없습니다", "순위를 선택한 뒤 저장을 눌러 주세요.", true); return; }
+  if (await commit({results:{[id]:draft.res[id]}})){ delete draft.res[id]; lastSaved[id]=nowHM(); onState(); syncAdmin(); showSaved("저장되었습니다.", `${ev.icon} ${ev.name} 결과`); }
+}
+async function saveTeam(){
+  if (!dirtyTeam()){ showSaved("변경된 내용이 없습니다", "이긴 팀을 선택한 뒤 저장을 눌러 주세요.", true); return; }
+  if (await commit({team:draft.team})){ draft.team = {}; lastSaved.team=nowHM(); onState(); syncAdmin(); showSaved("저장되었습니다.", "🔵⚪ 청백대항전 결과"); }
+}
+function pickRank(id,c,r){
+  const cur = resOf(id,c)?.r;
+  if (!draft.res[id]) draft.res[id] = {};
+  draft.res[id][c] = {r: cur===r ? null : r};
+  syncAdmin();
+}
+function setCount(id,c,f,raw){
+  const v = parseNum(raw), cur = resOf(id,c) || {};
+  if (!draft.res[id]) draft.res[id] = {};
+  draft.res[id][c] = {...cur, [f]: v};
+  syncAdmin();
+}
+function addRound(id){ const r = [...(roundsOf(id).length?roundsOf(id):[""])]; r.push(""); draft.team[id]=r; syncAdmin(); }
+function setRound(id,i,w){ const r = [...(roundsOf(id).length?roundsOf(id):[""])]; r[i]=w; draft.team[id]=r; syncAdmin(); }
+
 function renderAdmin(){
   const v = $("#view");
   if (fb && !isAdmin){
@@ -510,61 +582,61 @@ function renderAdmin(){
   const g = +(mem.get("bangi-ag")||3);
   let h = fb ? `<div class="card row"><span>👤 ${user.email}</span><span class="muted">자동 로그인 유지 중</span><button class="btn" style="margin-left:auto" onclick="logout()">로그아웃</button></div>`
              : `<div class="banner">로컬 데모 모드입니다. 입력한 점수는 이 기기에만 저장되며 다른 사람에게 공유되지 않습니다. (Firebase 연결: SETUP.md)</div>`;
-  h += `<div class="card"><h3>🔵⚪ 청·백팀 선택 <small class="muted">학급별로 눌러서 선택 (다시 누르면 해제)</small></h3>` + [3,2,1].map(gr=>`<div class="arow"><span class="nm">${gr}학년</span>` + Array.from({length:GRADE_CLASSES[gr]},(_,i)=>{ const c=`${gr}-${i+1}`;
+  h += `<div class="card"><h3>🔵⚪ 청·백팀 선택 <small class="muted">누르면 바로 저장 · 다시 누르면 해제</small></h3>` + [3,2,1].map(gr=>`<div class="arow"><span class="nm">${gr}학년</span>` + Array.from({length:GRADE_CLASSES[gr]},(_,i)=>{ const c=`${gr}-${i+1}`;
       return `<span class="row" style="gap:3px"><b>${c}</b><button class="chip b" data-t="${c}|청" onclick="pickTeam('${c}','청')">청</button><button class="chip w" data-t="${c}|백" onclick="pickTeam('${c}','백')">백</button></span>`; }).join("") + `</div>`).join("") + `</div>`;
   h += `<div class="chips">${[3,2,1].map(x=>`<button class="chip ${x===g?"on":""}" onclick="setAG(${x})">${x}학년</button>`).join("")}</div>`;
+  const N = GRADE_CLASSES[g];
   CLASS_EVENTS.forEach(ev=>{
-    h += `<div class="card"><h3>${ev.icon} ${ev.no} ${ev.name} <small class="muted">${ev.type==="count"?"개수 입력":"기록(초) 입력 · 예: 45.3 또는 1:05.3"}</small></h3>`;
-    for (let i=1;i<=GRADE_CLASSES[g];i++){
+    h += `<div class="card"><h3>${ev.icon} ${ev.no} ${ev.name} <small class="muted">${isRank(ev)?"순위를 눌러 선택":"남·여 개수 입력"}</small></h3>`;
+    for (let i=1;i<=N;i++){
       const c=`${g}-${i}`;
-      h += `<div class="arow"><span class="nm">${g}-${i}</span>` + (ev.type==="count"
-        ? `<input class="in" inputmode="numeric" placeholder="남 개수" data-ev="${ev.id}" data-c="${c}" data-f="m"><input class="in" inputmode="numeric" placeholder="여 개수" data-ev="${ev.id}" data-c="${c}" data-f="f">`
-        : `<input class="in" inputmode="decimal" placeholder="초" data-ev="${ev.id}" data-c="${c}" data-f="v">`)
+      h += `<div class="arow"><span class="nm">${c}</span>` + (isRank(ev)
+        ? `<div class="rkbtns">` + Array.from({length:N},(_,k)=>`<button class="chip rb" data-ev="${ev.id}" data-c="${c}" data-r="${k+1}" onclick="pickRank('${ev.id}','${c}',${k+1})">${k+1}등</button>`).join("") + `</div>`
+        : `<input class="in" inputmode="numeric" placeholder="남 개수" data-ev="${ev.id}" data-c="${c}" data-f="m"><input class="in" inputmode="numeric" placeholder="여 개수" data-ev="${ev.id}" data-c="${c}" data-f="f">`)
         + `<span class="pv" data-pv="${ev.id}|${c}"></span></div>`;
     }
-    h += `</div>`;
+    h += `<div class="savebar"><button class="btn savebtn" data-save="${ev.id}" onclick="saveEvent('${ev.id}')">💾 저장</button><span class="muted sv" data-sv="${ev.id}"></span></div></div>`;
   });
   h += `<div class="card"><h3>🔵⚪ 청백대항전 결과 <small class="muted">이긴 팀을 선택</small></h3>` + TEAM_EVENTS.map(ev=>`<div style="margin:10px 0"><b>${ev.icon} ${ev.no} ${ev.name}</b> <small class="muted">(승 ${ev.pts[0]} / 패 ${ev.pts[1]})</small><div id="rounds-${ev.id}"></div>
-      <button class="btn" onclick="addRound('${ev.id}')">+ 경기 추가</button></div>`).join("") + `</div>`;
-  h += `<div class="card"><h3>📣 응원 및 질서 우수 학급 <small class="muted">(3개 학급)</small></h3><div class="row" id="spirit">` +
+      <button class="btn" onclick="addRound('${ev.id}')">+ 경기 추가</button></div>`).join("") +
+    `<div class="savebar"><button class="btn savebtn" data-save="team" onclick="saveTeam()">💾 저장</button><span class="muted sv" data-sv="team"></span></div></div>`;
+  h += `<div class="card"><h3>📣 응원 및 질서 우수 학급 <small class="muted">누르면 바로 저장</small></h3><div class="row" id="spirit">` +
     ALL_CLASSES.map(c=>`<button class="chip" data-sp="${c}" onclick="toggleSpirit('${c}')">${c}</button>`).join("") + `</div></div>`;
   h += `<div class="card"><h3>⚠️ 초기화</h3><button class="btn danger" onclick="if(confirm('모든 경기 결과를 삭제합니다. 되돌릴 수 없습니다. 계속할까요?'))resetAll()">전체 결과 초기화</button></div>`;
   $("#view").innerHTML = h;
-  document.querySelectorAll("input[data-ev]").forEach(inp=>inp.addEventListener("change", onInput));
+  document.querySelectorAll("input[data-ev]").forEach(inp=>inp.addEventListener("input", ()=>setCount(inp.dataset.ev, inp.dataset.c, inp.dataset.f, inp.value)));
   syncAdmin();
 }
 function setAG(g){ mem.set("bangi-ag", g); renderAdmin(); }
 function syncAdmin(){
-  const g = +(mem.get("bangi-ag")||3);
+  const g = +(mem.get("bangi-ag")||3), merged = mergedResults();
   document.querySelectorAll("input[data-ev]").forEach(inp=>{
     if (document.activeElement===inp) return;
-    const r = state.results?.[inp.dataset.ev]?.[inp.dataset.c]; const x = r?.[inp.dataset.f];
+    const x = resOf(inp.dataset.ev, inp.dataset.c)?.[inp.dataset.f];
     inp.value = x==null ? "" : x;
   });
+  document.querySelectorAll("button.rb").forEach(b=>b.classList.toggle("on", resOf(b.dataset.ev,b.dataset.c)?.r === +b.dataset.r));
   CLASS_EVENTS.forEach(ev=>{
-    const rk = rankEvent(ev,g);
-    document.querySelectorAll(`[data-pv^="${ev.id}|"]`).forEach(sp=>{ const x = rk[sp.dataset.pv.split("|")[1]]; sp.textContent = x ? `${x.rank}위 · ${x.pts}점` : ""; });
+    const rk = rankEvent(ev,g,merged);
+    document.querySelectorAll(`[data-pv^="${ev.id}|"]`).forEach(sp=>{ const x = rk[sp.dataset.pv.split("|")[1]]; sp.textContent = x ? `${x.rank}등 → ${x.pts}점` : ""; });
   });
   TEAM_EVENTS.forEach(ev=>{
     const box = document.getElementById("rounds-"+ev.id); if (!box) return;
-    const rs = state.team?.[ev.id] || [];
-    const list = rs.length ? rs : [""];
+    const rs = roundsOf(ev.id), list = rs.length ? rs : [""];
     box.innerHTML = list.map((w,i)=>`<div class="rnd"><span class="muted">${i+1}경기</span>
       <button class="chip b ${w==="청"?"on":""}" onclick="setRound('${ev.id}',${i},'청')">청 승</button>
       <button class="chip w ${w==="백"?"on":""}" onclick="setRound('${ev.id}',${i},'백')">백 승</button>
       <button class="chip" onclick="setRound('${ev.id}',${i},'')">취소</button></div>`).join("");
   });
+  document.querySelectorAll("[data-save]").forEach(b=>{
+    const id = b.dataset.save, dirty = id==="team" ? dirtyTeam() : dirtyEv(id);
+    b.classList.toggle("pri", dirty);
+    const sv = document.querySelector(`[data-sv="${id}"]`);
+    if (sv){ sv.textContent = dirty ? "⚠ 저장 전입니다. 저장을 눌러 주세요" : (lastSaved[id] ? `✓ ${lastSaved[id]} 저장됨` : ""); sv.classList.toggle("dirty", dirty); }
+  });
   document.querySelectorAll("[data-sp]").forEach(b=>b.classList.toggle("on",(state.spirit||[]).includes(b.dataset.sp)));
   document.querySelectorAll("[data-t]").forEach(b=>{ const [c,t]=b.dataset.t.split("|"); b.classList.toggle("on", state.teams?.[c]===t); });
 }
-function onInput(e){
-  const {ev,c,f} = e.target.dataset;
-  const val = parseNum(e.target.value);
-  if (e.target.value.trim() && val==null){ toast("숫자를 입력하세요"); return; }
-  save(["results",ev,c], {[f]: val});
-}
-function addRound(id){ const r = [...(state.team?.[id]||[""])]; r.push(""); save(["team",id], r); }
-function setRound(id,i,w){ const r = [...(state.team?.[id]||[""])]; r[i]=w; save(["team",id], r); }
 function toggleSpirit(c){ const s = new Set(state.spirit||[]); s.has(c)?s.delete(c):s.add(c); save(["spirit"], [...s]); }
 function pickTeam(c,t){ save(["teams",c], state.teams?.[c]===t ? "" : t); }
 
