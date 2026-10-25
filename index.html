@@ -147,12 +147,15 @@ ul.n li{font-size:15px}
 nav button{white-space:nowrap}
 @media(max-width:520px){nav{gap:5px;padding:10px 10px 8px}nav button{flex-direction:column;gap:2px;padding:9px 0;font-size:15px}nav button span{font-size:22px}}
 header h1{white-space:nowrap;font-size:clamp(19px,6.2vw,36px)}
+.mycard{border:2px solid var(--pri2);background:linear-gradient(135deg,rgba(229,36,92,.16),rgba(229,36,92,.04));box-shadow:0 6px 18px rgba(229,36,92,.2)}
+.mylabel{font-size:20px}
+.mysel{flex:1;min-width:150px;font-size:19px;font-weight:700;padding:12px 14px;border:2px solid var(--pri2);border-radius:12px;background:#0d1322;color:var(--ink)}
 </style>
 </head>
 <body>
 <header>
   <h1>2026 <em>방이중학교</em> 체육 한마당</h1>
-  <p>2026. 10. 30.(금) 08:30 ~ 14:30 · 운동장 · 방이중학교 체육교육부</p>
+  <p>2026. 10. 30.(금) 08:30 ~ 14:30 · 운동장</p>
   <span class="status" id="status">연결 확인 중…</span>
 </header>
 <nav id="nav">
@@ -184,7 +187,7 @@ const FIREBASE_CONFIG = {
   storageBucket:"xxx.appspot.com", messagingSenderId:"...", appId:"..."
 };*/
 // 관리자로 허용할 구글 계정 (firestore.rules 의 목록과 동일하게 맞추세요)
-const ADMIN_EMAILS = ["bangi2026@gmail.com", "tlawogur9147@gmail.com"]; // 관리자 아이디 (firestore.rules 와 동일하게)
+const ADMIN_EMAILS = ["bangi2026@gmail.com"]; // 관리자 아이디 (firestore.rules 와 동일하게)
 const EVENT_DATE = "2026-10-30";
 
 /* ============ 계획서 데이터 ============ */
@@ -339,7 +342,7 @@ function renderTab(){
 function myTeam(){ const c=mine(); return c ? state.teams?.[c] : null; }
 const fold = {};
 function toggleFold(id){ fold[id] = !fold[id]; renderTab(); }
-function partOf(s){ const m=mins(s.s); return m<570?"pre":m<720?"p1":m<780?"mid":m<855?"p2":"end"; }
+function partOf(s){ const m=mins(s.s); return m<720?"p1":m<855?"p2":"end"; }
 function viewSchedule(){
   const now = nowMin(), my = mine();
   if (fold.p1===undefined) fold.p1 = now!=null && now>=720;
@@ -361,8 +364,8 @@ function viewSchedule(){
     const tag = s.k!=="r" ? `<span class="tag ${s.k}">${tags[s.k]}</span>` : "";
     return `<div class="tl ${cls}"><div class="t">${s.s}<br><span class="muted">~ ${s.e}</span></div><div class="b">${tag}<b>${s.t}</b>${cls==="now"?" 🔴 진행 중":""}${s.sub?`<small>${s.sub}</small>`:""}${snackHtml(s)}</div></div>`;
   };
-  let h = `<div class="card"><div class="row"><b>👤 내 반</b><select onchange="setMine(this.value)">${opts}</select>${my&&tm?`<span class="tm ${tm==="청"?"b":"w"}">${tm}팀</span>`:""}</div></div>`;
-  const parts = [["pre",null],["p1","1부 학급대항전","09:30 ~ 12:00"],["mid",null],["p2","2부 청백대항전","13:00 ~ 14:15"],["end",null]];
+  let h = `<div class="card mycard"><div class="row"><b class="mylabel">👤 내 반 선택</b><select class="mysel" onchange="setMine(this.value)">${opts}</select>${my&&tm?`<span class="tm ${tm==="청"?"b":"w"}">${tm}팀</span>`:""}</div></div>`;
+  const parts = [["p1","1부 학급대항전","08:30 ~ 12:00"],["p2","2부 청백대항전","12:00 ~ 14:15"],["end",null]];
   parts.forEach(([id,title,range])=>{
     const rows = SCHEDULE.filter(s=>partOf(s)===id).map(rowHtml).join("");
     if (!title){ h += `<div class="card">${rows}</div>`; return; }
@@ -422,11 +425,9 @@ function renderAdmin(){
   const v = $("#view");
   if (fb && !isAdmin){
     v.innerHTML = `<div class="card"><h3>🔒 관리자 로그인</h3>
-      <p class="muted">구글 계정으로 한 번 로그인하면 이 기기에서는 이후 비밀번호 입력 없이 자동으로 관리자 모드가 유지됩니다.</p>
+      <p class="muted">아이디와 비밀번호로 한 번 로그인하면 이 기기에서는 이후 비밀번호 입력 없이 자동으로 관리자 모드가 유지됩니다.</p>
       ${user ? `<p>로그인됨: <b>${user.email}</b><br><span style="color:var(--bad)">이 계정은 관리자로 등록되어 있지 않습니다.</span></p><button class="btn" onclick="logout()">로그아웃</button>`
-             : `<button class="btn pri" onclick="login()">Google 계정으로 로그인</button>
-               <div class="muted" style="margin:14px 0 6px">또는 아이디(이메일 형식) / 비밀번호로 로그인</div>
-               <div class="row"><input id="em" type="email" placeholder="아이디 (bangi2026@gmail.com)" autocomplete="username" style="flex:1;min-width:150px"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" style="flex:1;min-width:120px"><button class="btn pri" onclick="loginEmail()">로그인</button></div>`}</div>`;
+             : `<div class="row"><input id="em" type="email" placeholder="아이디" autocomplete="username" style="flex:1;min-width:150px"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" style="flex:1;min-width:120px"><button class="btn pri" onclick="loginEmail()">로그인</button></div>`}</div>`;
     return;
   }
   const g = +(mem.get("bangi-ag")||3);
@@ -490,11 +491,6 @@ function setRound(id,i,w){ const r = [...(state.team?.[id]||[""])]; r[i]=w; save
 function toggleSpirit(c){ const s = new Set(state.spirit||[]); s.has(c)?s.delete(c):s.add(c); save(["spirit"], [...s]); }
 function pickTeam(c,t){ save(["teams",c], state.teams?.[c]===t ? "" : t); }
 
-async function login(){
-  const auth = firebase.auth(), p = new firebase.auth.GoogleAuthProvider();
-  try{ await auth.signInWithPopup(p); }
-  catch(e){ if (e.code!=="auth/popup-closed-by-user") try{ await auth.signInWithRedirect(p); }catch(err){ toast("로그인 실패: "+err.code); } }
-}
 async function loginEmail(){
   const e = $("#em").value.trim().toLowerCase(), p = $("#pw").value;
   if (!e || !p){ toast("아이디와 비밀번호를 입력하세요"); return; }
