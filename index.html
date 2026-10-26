@@ -311,6 +311,10 @@ const SCHEDULE = [
 // 간식 부스: [학년, 학급들, 시작, 종료]
 const SNACK = [[3,[1,2],"09:45","10:00"],[2,[1,2],"10:00","10:15"],[1,[1,2,3],"10:15","10:30"],[3,[3,4],"10:30","10:45"],
   [2,[3,4],"10:45","11:00"],[1,[4,5],"11:00","11:10"],[3,[5],"11:10","11:20"],[2,[5,6],"11:20","11:30"]];
+// 청·백팀 편성 (고정)
+const TEAM_OF = {};
+["1-2","1-3","2-1","2-2","2-5","3-3","3-4","3-5"].forEach(c=>TEAM_OF[c]="청");
+["1-1","1-4","1-5","2-3","2-4","2-6","3-1","3-2"].forEach(c=>TEAM_OF[c]="백");
 const ALL_CLASSES = [];
 for (const g of [1,2,3]) for (let i=1;i<=GRADE_CLASSES[g];i++) ALL_CLASSES.push(`${g}-${i}`);
 
@@ -376,7 +380,7 @@ function gradeTable(g){
   const per = CLASS_EVENTS.map(ev=>rankEvent(ev,g)), {sc} = teamScore();
   const rows = [];
   for (let i=1;i<=GRADE_CLASSES[g];i++){
-    const c=`${g}-${i}`, team = state.teams?.[c] || "";
+    const c=`${g}-${i}`, team = TEAM_OF[c] || "";
     const cls = per.reduce((s,p)=>s+(p[c]?.pts||0),0), tp = team ? sc[team] : 0;
     rows.push({c, team, ev:per.map(p=>p[c]||null), cls, tp, total:cls+tp, n99:per[2][c]});
   }
@@ -427,7 +431,7 @@ function renderTab(){
   else renderAdmin();
 }
 
-function myTeam(){ const c=mine(); return c ? state.teams?.[c] : null; }
+function myTeam(){ const c=mine(); return c ? TEAM_OF[c] : null; }
 const manual = {}, ENDS = {p1:720, p2:870};
 const isFolded = (id, now) => manual[id]!==undefined ? manual[id] : (now!=null && now>=ENDS[id]);
 function toggleFold(id){ manual[id] = !isFolded(id, nowMin()); renderTab(); }
@@ -582,8 +586,6 @@ function renderAdmin(){
   const g = +(mem.get("bangi-ag")||3);
   let h = fb ? `<div class="card row"><span>👤 ${user.email}</span><span class="muted">자동 로그인 유지 중</span><button class="btn" style="margin-left:auto" onclick="logout()">로그아웃</button></div>`
              : `<div class="banner">로컬 데모 모드입니다. 입력한 점수는 이 기기에만 저장되며 다른 사람에게 공유되지 않습니다. (Firebase 연결: SETUP.md)</div>`;
-  h += `<div class="card"><h3>🔵⚪ 청·백팀 선택 <small class="muted">누르면 바로 저장 · 다시 누르면 해제</small></h3>` + [3,2,1].map(gr=>`<div class="arow"><span class="nm">${gr}학년</span>` + Array.from({length:GRADE_CLASSES[gr]},(_,i)=>{ const c=`${gr}-${i+1}`;
-      return `<span class="row" style="gap:3px"><b>${c}</b><button class="chip b" data-t="${c}|청" onclick="pickTeam('${c}','청')">청</button><button class="chip w" data-t="${c}|백" onclick="pickTeam('${c}','백')">백</button></span>`; }).join("") + `</div>`).join("") + `</div>`;
   h += `<div class="chips">${[3,2,1].map(x=>`<button class="chip ${x===g?"on":""}" onclick="setAG(${x})">${x}학년</button>`).join("")}</div>`;
   const N = GRADE_CLASSES[g];
   CLASS_EVENTS.forEach(ev=>{
@@ -635,10 +637,8 @@ function syncAdmin(){
     if (sv){ sv.textContent = dirty ? "⚠ 저장 전입니다. 저장을 눌러 주세요" : (lastSaved[id] ? `✓ ${lastSaved[id]} 저장됨` : ""); sv.classList.toggle("dirty", dirty); }
   });
   document.querySelectorAll("[data-sp]").forEach(b=>b.classList.toggle("on",(state.spirit||[]).includes(b.dataset.sp)));
-  document.querySelectorAll("[data-t]").forEach(b=>{ const [c,t]=b.dataset.t.split("|"); b.classList.toggle("on", state.teams?.[c]===t); });
 }
 function toggleSpirit(c){ const s = new Set(state.spirit||[]); s.has(c)?s.delete(c):s.add(c); save(["spirit"], [...s]); }
-function pickTeam(c,t){ save(["teams",c], state.teams?.[c]===t ? "" : t); }
 
 async function loginEmail(){
   const e = $("#em").value.trim().toLowerCase(), p = $("#pw").value;
